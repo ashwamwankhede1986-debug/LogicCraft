@@ -1,0 +1,53 @@
+{
+  "circuitName": "LogicCraft Review-2 Reference Circuit",
+  "version": "1.0",
+  "description": "Integrated 3-gate circuit connecting AND, OR, and NOT gates for cross-subject evaluation",
+  "gates": [
+    {
+      "id": "G1",
+      "type": "AND",
+      "name": "Primary_AND_Gate",
+      "inputCount": 2,
+      "inputLabels": ["A", "B"],
+      "defaultInputs": [1, 0],
+      "output": 0,
+      "position": { "x": -250, "y": 80 }
+    },
+    {
+      "id": "G2",
+      "type": "OR",
+      "name": "Secondary_OR_Gate",
+      "inputCount": 2,
+      "inputLabels": ["IN1", "C"],
+      "defaultInputs": [0, 1],
+      "output": 1,
+      "position": { "x": 50, "y": -40 }
+    },
+    {
+      "id": "G3",
+      "type": "NOT",
+      "name": "Output_Inverter",
+      "inputCount": 1,
+      "inputLabels": ["IN"],
+      "defaultInputs": [1],
+      "output": 0,
+      "position": { "x": 320, "y": -40 }
+    }
+  ],
+  "connections": [
+    {
+      "id": "C1",
+      "sourceGateId": "G1",
+      "sourceOutput": 0,
+      "destinationGateId": "G2",
+      "destinationInputIndex": 0
+    },
+    {
+      "id": "C2",
+      "sourceGateId": "G2",
+      "sourceOutput": 0,
+      "destinationGateId": "G3",
+      "destinationInputIndex": 0
+    }
+  ]
+}
