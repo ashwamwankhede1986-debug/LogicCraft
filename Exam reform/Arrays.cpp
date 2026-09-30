@@ -1,148 +1,481 @@
 #include <iostream>
+#include <string>
 using namespace std;
 
-class BooleanArray
+class BooleanTable
 {
 private:
-    bool data[100];
-    int size;
+    // Maximum:
+    // 8 rows for 3 inputs (2^3 = 8)
+    // 3 input columns + 1 output column
+    bool data[8][4];
+
+    int rows;
+    int inputs;
+    string gate;
 
 public:
 
     // Constructor
-    BooleanArray()
+    BooleanTable()
     {
-        size = 0;
+        rows = 0;
+        inputs = 0;
+        gate = "";
     }
 
-    // Insert a Boolean value
-    void insert(bool value)
+    // ----------------------------------------------------
+    // Set number of inputs
+    // ----------------------------------------------------
+    void setInputs()
     {
-        if (size >= 100)
+        do
         {
-            cout << "Array is full!" << endl;
+            cout << "Enter number of gate inputs (2 or 3): ";
+            cin >> inputs;
+
+            if (inputs != 2 && inputs != 3)
+            {
+                cout << "Please enter only 2 or 3.\n";
+            }
+
+        } while (inputs != 2 && inputs != 3);
+    }
+
+    // ----------------------------------------------------
+    // Select Logic Gate
+    // ----------------------------------------------------
+    void selectGate()
+    {
+        int choice;
+
+        cout << "\n===== SELECT LOGIC GATE =====\n";
+        cout << "1. AND\n";
+        cout << "2. OR\n";
+        cout << "3. NAND\n";
+        cout << "4. NOR\n";
+        cout << "5. XOR\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice)
+        {
+        case 1:
+            gate = "AND";
+            break;
+
+        case 2:
+            gate = "OR";
+            break;
+
+        case 3:
+            gate = "NAND";
+            break;
+
+        case 4:
+            gate = "NOR";
+            break;
+
+        case 5:
+            gate = "XOR";
+            break;
+
+        default:
+            cout << "Invalid choice. AND gate selected.\n";
+            gate = "AND";
+        }
+    }
+
+    // ----------------------------------------------------
+    // Calculate output for one row
+    // ----------------------------------------------------
+    bool calculateOutput(int row)
+    {
+        bool result;
+
+        if (gate == "AND")
+        {
+            result = true;
+
+            for (int j = 0; j < inputs; j++)
+            {
+                result = result && data[row][j];
+            }
+        }
+
+        else if (gate == "OR")
+        {
+            result = false;
+
+            for (int j = 0; j < inputs; j++)
+            {
+                result = result || data[row][j];
+            }
+        }
+
+        else if (gate == "NAND")
+        {
+            result = true;
+
+            for (int j = 0; j < inputs; j++)
+            {
+                result = result && data[row][j];
+            }
+
+            result = !result;
+        }
+
+        else if (gate == "NOR")
+        {
+            result = false;
+
+            for (int j = 0; j < inputs; j++)
+            {
+                result = result || data[row][j];
+            }
+
+            result = !result;
+        }
+
+        else if (gate == "XOR")
+        {
+            result = false;
+
+            for (int j = 0; j < inputs; j++)
+            {
+                result = result ^ data[row][j];
+            }
+        }
+
+        return result;
+    }
+
+    // ----------------------------------------------------
+    // Generate complete truth table
+    // ----------------------------------------------------
+    void generateTruthTable()
+    {
+        rows = 1 << inputs;   // 2^inputs
+
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < inputs; j++)
+            {
+                data[i][j] =
+                    (i >> (inputs - j - 1)) & 1;
+            }
+
+            data[i][inputs] = calculateOutput(i);
+        }
+
+        cout << "\nTruth table generated successfully.\n";
+    }
+
+    // ----------------------------------------------------
+    // INSERT operation
+    // ----------------------------------------------------
+    void insertRow()
+    {
+        if (rows >= 8)
+        {
+            cout << "\nArray is full! Maximum 8 rows allowed.\n";
             return;
         }
 
-        data[size] = value;
-        size++;
+        cout << "\nEnter values for new row:\n";
 
-        cout << "Value inserted successfully." << endl;
+        for (int j = 0; j < inputs; j++)
+        {
+            int value;
+
+            do
+            {
+                cout << "Input " << j + 1 << " (0/1): ";
+                cin >> value;
+
+                if (value != 0 && value != 1)
+                {
+                    cout << "Please enter only 0 or 1.\n";
+                }
+
+            } while (value != 0 && value != 1);
+
+            data[rows][j] = value;
+        }
+
+        data[rows][inputs] = calculateOutput(rows);
+
+        rows++;
+
+        cout << "Row inserted successfully.\n";
     }
 
-    // Delete value at a particular index
-    void remove(int index)
+    // ----------------------------------------------------
+    // DELETE operation
+    // ----------------------------------------------------
+    void deleteRow()
     {
-        if (index < 0 || index >= size)
+        if (rows == 0)
         {
-            cout << "Invalid index!" << endl;
+            cout << "\nTable is empty.\n";
             return;
         }
 
-        // Shift elements to the left
-        for (int i = index; i < size - 1; i++)
+        int row;
+
+        cout << "\nEnter row number to delete (1-" << rows << "): ";
+        cin >> row;
+
+        if (row < 1 || row > rows)
         {
-            data[i] = data[i + 1];
-        }
-
-        size--;
-
-        cout << "Value deleted successfully." << endl;
-    }
-
-    // Update a Boolean value
-    void update(int index, bool value)
-    {
-        if (index < 0 || index >= size)
-        {
-            cout << "Invalid index!" << endl;
+            cout << "Invalid row number.\n";
             return;
         }
 
-        data[index] = value;
+        row--;
 
-        cout << "Value updated successfully." << endl;
+        // Shift rows upward
+        for (int i = row; i < rows - 1; i++)
+        {
+            for (int j = 0; j <= inputs; j++)
+            {
+                data[i][j] = data[i + 1][j];
+            }
+        }
+
+        rows--;
+
+        cout << "Row deleted successfully.\n";
     }
 
-    // Search for a Boolean value
-    void search(bool value)
+    // ----------------------------------------------------
+    // UPDATE operation
+    // ----------------------------------------------------
+    void updateRow()
     {
+        if (rows == 0)
+        {
+            cout << "\nTable is empty.\n";
+            return;
+        }
+
+        int row;
+
+        cout << "\nEnter row number to update (1-" << rows << "): ";
+        cin >> row;
+
+        if (row < 1 || row > rows)
+        {
+            cout << "Invalid row number.\n";
+            return;
+        }
+
+        row--;
+
+        cout << "\nEnter new values:\n";
+
+        for (int j = 0; j < inputs; j++)
+        {
+            int value;
+
+            do
+            {
+                cout << "Input " << j + 1 << " (0/1): ";
+                cin >> value;
+
+                if (value != 0 && value != 1)
+                {
+                    cout << "Please enter only 0 or 1.\n";
+                }
+
+            } while (value != 0 && value != 1);
+
+            data[row][j] = value;
+        }
+
+        // Recalculate output
+        data[row][inputs] = calculateOutput(row);
+
+        cout << "Row updated successfully.\n";
+    }
+
+    // ----------------------------------------------------
+    // SEARCH operation
+    // ----------------------------------------------------
+    void searchRow()
+    {
+        if (rows == 0)
+        {
+            cout << "\nTable is empty.\n";
+            return;
+        }
+
+        bool searchValues[3];
+
+        cout << "\nEnter input combination to search:\n";
+
+        for (int j = 0; j < inputs; j++)
+        {
+            int value;
+
+            do
+            {
+                cout << "Input " << j + 1 << " (0/1): ";
+                cin >> value;
+
+                if (value != 0 && value != 1)
+                {
+                    cout << "Please enter only 0 or 1.\n";
+                }
+
+            } while (value != 0 && value != 1);
+
+            searchValues[j] = value;
+        }
+
         bool found = false;
 
-        for (int i = 0; i < size; i++)
+        for (int i = 0; i < rows; i++)
         {
-            if (data[i] == value)
+            bool match = true;
+
+            for (int j = 0; j < inputs; j++)
             {
-                cout << "Value found at index: " << i << endl;
+                if (data[i][j] != searchValues[j])
+                {
+                    match = false;
+                    break;
+                }
+            }
+
+            if (match)
+            {
+                cout << "\nCombination found at row "
+                     << i + 1 << "." << endl;
+
+                cout << "Output = "
+                     << data[i][inputs] << endl;
+
                 found = true;
             }
         }
 
         if (!found)
         {
-            cout << "Value not found." << endl;
+            cout << "\nCombination not found.\n";
         }
     }
 
-    // Display the array
+    // ----------------------------------------------------
+    // DISPLAY operation
+    // ----------------------------------------------------
     void display()
     {
-        cout << "Boolean Array: ";
-
-        for (int i = 0; i < size; i++)
+        if (rows == 0)
         {
-            cout << data[i] << " ";
+            cout << "\nTable is empty.\n";
+            return;
         }
 
-        cout << endl;
-    }
+        cout << "\n=====================================\n";
+        cout << "        " << gate << " TRUTH TABLE\n";
+        cout << "=====================================\n";
 
-    // Perform AND operation on all values
-    bool ANDOperation()
-    {
-        bool result = true;
-
-        for (int i = 0; i < size; i++)
+        for (int j = 0; j < inputs; j++)
         {
-            result = result && data[i];
+            cout << "Input" << j + 1 << "\t";
         }
 
-        return result;
+        cout << "Output\n";
+
+        cout << "-------------------------------------\n";
+
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j <= inputs; j++)
+            {
+                cout << data[i][j] << "\t";
+            }
+
+            cout << endl;
+        }
+
+        cout << "=====================================\n";
     }
 };
 
+
+// ========================================================
+// MAIN FUNCTION
+// ========================================================
+
 int main()
 {
-    BooleanArray inputs;
+    BooleanTable table;
 
-    cout << "===== LogicCraft CO1 - Arrays =====" << endl;
+    int choice;
 
-    // Insert Boolean inputs
-    inputs.insert(true);
-    inputs.insert(false);
-    inputs.insert(true);
+    cout << "========================================\n";
+    cout << " DIGITAL LOGIC CIRCUIT VISUAL WORKBENCH\n";
+    cout << "        CO1 - 2D ARRAY MODULE\n";
+    cout << "========================================\n";
 
-    // Display array
-    cout << "\nAfter insertion:" << endl;
-    inputs.display();
+    // User selects number of inputs
+    table.setInputs();
 
-    // Search
-    cout << "\nSearching for TRUE:" << endl;
-    inputs.search(true);
+    // User selects gate
+    table.selectGate();
 
-    // Update
-    cout << "\nUpdating index 1 to TRUE:" << endl;
-    inputs.update(1, true);
-    inputs.display();
+    do
+    {
+        cout << "\n\n========== MENU ==========\n";
+        cout << "1. Generate Truth Table\n";
+        cout << "2. Insert Row\n";
+        cout << "3. Delete Row\n";
+        cout << "4. Update Row\n";
+        cout << "5. Search Row\n";
+        cout << "6. Display Truth Table\n";
+        cout << "7. Exit\n";
+        cout << "==========================\n";
 
-    // AND operation
-    cout << "\nAND Result: "
-         << inputs.ANDOperation() << endl;
+        cout << "Enter your choice: ";
+        cin >> choice;
 
-    // Delete
-    cout << "\nDeleting index 1:" << endl;
-    inputs.remove(1);
-    inputs.display();
+        switch (choice)
+        {
+        case 1:
+            table.generateTruthTable();
+            break;
+
+        case 2:
+            table.insertRow();
+            break;
+
+        case 3:
+            table.deleteRow();
+            break;
+
+        case 4:
+            table.updateRow();
+            break;
+
+        case 5:
+            table.searchRow();
+            break;
+
+        case 6:
+            table.display();
+            break;
+
+        case 7:
+            cout << "\nExiting program...\n";
+            break;
+
+        default:
+            cout << "\nInvalid choice. Try again.\n";
+        }
+
+    } while (choice != 7);
 
     return 0;
 }

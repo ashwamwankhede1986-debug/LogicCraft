@@ -7,6 +7,8 @@ struct Node
 {
     int gateId;
     string gateType;
+
+    Node* prev;
     Node* next;
 };
 
@@ -14,87 +16,77 @@ class GateList
 {
 private:
     Node* head;
+    Node* tail;
 
 public:
 
-    // Constructor
     GateList()
     {
         head = nullptr;
+        tail = nullptr;
     }
 
-    // Insert a new gate
+    // Insert a gate at the end
     void insertGate(int id, string type)
     {
         Node* newNode = new Node;
 
         newNode->gateId = id;
         newNode->gateType = type;
+        newNode->prev = nullptr;
         newNode->next = nullptr;
 
-        // If list is empty
         if (head == nullptr)
         {
-            head = newNode;
-            return;
+            head = tail = newNode;
         }
-
-        // Move to the last node
-        Node* current = head;
-
-        while (current->next != nullptr)
+        else
         {
-            current = current->next;
+            tail->next = newNode;
+            newNode->prev = tail;
+            tail = newNode;
         }
 
-        // Add new node at the end
-        current->next = newNode;
+        cout << "Gate inserted successfully.\n";
     }
 
-    // Delete a gate using its ID
+    // Delete a gate
     void deleteGate(int id)
     {
         if (head == nullptr)
         {
-            cout << "List is empty." << endl;
-            return;
-        }
-
-        // If the first gate needs to be deleted
-        if (head->gateId == id)
-        {
-            Node* temp = head;
-            head = head->next;
-
-            delete temp;
-
-            cout << "Gate deleted successfully." << endl;
+            cout << "List is empty.\n";
             return;
         }
 
         Node* current = head;
 
-        // Find the gate
-        while (current->next != nullptr &&
-               current->next->gateId != id)
+        while (current != nullptr && current->gateId != id)
         {
             current = current->next;
         }
 
-        // Gate not found
-        if (current->next == nullptr)
+        if (current == nullptr)
         {
-            cout << "Gate not found." << endl;
+            cout << "Gate not found.\n";
             return;
         }
 
-        // Remove the gate
-        Node* temp = current->next;
-        current->next = temp->next;
+        if (current == head)
+            head = current->next;
 
-        delete temp;
+        if (current == tail)
+            tail = current->prev;
 
-        cout << "Gate deleted successfully." << endl;
+        if (current->prev != nullptr)
+            current->prev->next = current->next;
+
+        if (current->next != nullptr)
+            current->next->prev = current->prev;
+
+        delete current;
+
+        cout << "Gate deleted successfully.\n";
     }
 
     // Update gate type
@@ -108,22 +100,49 @@ public:
             {
                 current->gateType = newType;
 
-                cout << "Gate updated successfully." << endl;
+                cout << "Gate updated successfully.\n";
                 return;
             }
 
             current = current->next;
         }
 
-        cout << "Gate not found." << endl;
+        cout << "Gate not found.\n";
     }
 
-    // Display all gates
-    void display()
+    // Search gate
+    void searchGate(int id)
     {
         Node* current = head;
 
-        cout << "Circuit Gates: ";
+        while (current != nullptr)
+        {
+            if (current->gateId == id)
+            {
+                cout << "\nGate found!\n";
+                cout << "Gate ID   : " << current->gateId << endl;
+                cout << "Gate Type : " << current->gateType << endl;
+                return;
+            }
+
+            current = current->next;
+        }
+
+        cout << "Gate not found.\n";
+    }
+
+    // Display from first to last
+    void displayForward()
+    {
+        if (head == nullptr)
+        {
+            cout << "List is empty.\n";
+            return;
+        }
+
+        Node* current = head;
+
+        cout << "\nCircuit Gates (Forward):\n";
 
         while (current != nullptr)
         {
@@ -131,45 +150,144 @@ public:
                  << ": " << current->gateType << "]";
 
             if (current->next != nullptr)
-            {
-                cout << " -> ";
-            }
+                cout << " <-> ";
 
             current = current->next;
         }
 
-        cout << " -> NULL" << endl;
+        cout << endl;
+    }
+
+    // Display from last to first
+    void displayBackward()
+    {
+        if (tail == nullptr)
+        {
+            cout << "List is empty.\n";
+            return;
+        }
+
+        Node* current = tail;
+
+        cout << "\nCircuit Gates (Backward):\n";
+
+        while (current != nullptr)
+        {
+            cout << "[" << current->gateId
+                 << ": " << current->gateType << "]";
+
+            if (current->prev != nullptr)
+                cout << " <-> ";
+
+            current = current->prev;
+        }
+
+        cout << endl;
     }
 };
+
 
 int main()
 {
     GateList circuit;
 
-    cout << "===== LogicCraft CO2 - Linked List =====" << endl;
+    int choice;
 
-    // Insert gates
-    cout << "\nAdding gates:" << endl;
+    cout << "=========================================\n";
+    cout << " DIGITAL LOGIC CIRCUIT VISUAL WORKBENCH\n";
+    cout << "       CO2 - DOUBLY LINKED LIST\n";
+    cout << "=========================================\n";
 
-    circuit.insertGate(1, "AND");
-    circuit.insertGate(2, "OR");
-    circuit.insertGate(3, "XOR");
+    do
+    {
+        cout << "\n========== MENU ==========\n";
+        cout << "1. Insert Gate\n";
+        cout << "2. Delete Gate\n";
+        cout << "3. Update Gate\n";
+        cout << "4. Search Gate\n";
+        cout << "5. Display Forward\n";
+        cout << "6. Display Backward\n";
+        cout << "7. Exit\n";
+        cout << "==========================\n";
 
-    circuit.display();
+        cout << "Enter your choice: ";
+        cin >> choice;
 
-    // Update gate
-    cout << "\nUpdating Gate 2 from OR to NOT:" << endl;
+        switch (choice)
+        {
+        case 1:
+        {
+            int id;
+            string type;
 
-    circuit.updateGate(2, "NOT");
+            cout << "\nEnter Gate ID: ";
+            cin >> id;
 
-    circuit.display();
+            cout << "Enter Gate Type (AND/OR/NOT/NAND/NOR/XOR): ";
+            cin >> type;
 
-    // Delete gate
-    cout << "\nDeleting Gate 2:" << endl;
+            circuit.insertGate(id, type);
 
-    circuit.deleteGate(2);
+            break;
+        }
 
-    circuit.display();
+        case 2:
+        {
+            int id;
+
+            cout << "\nEnter Gate ID to delete: ";
+            cin >> id;
+
+            circuit.deleteGate(id);
+
+            break;
+        }
+
+        case 3:
+        {
+            int id;
+            string newType;
+
+            cout << "\nEnter Gate ID to update: ";
+            cin >> id;
+
+            cout << "Enter new Gate Type: ";
+            cin >> newType;
+
+            circuit.updateGate(id, newType);
+
+            break;
+        }
+
+        case 4:
+        {
+            int id;
+
+            cout << "\nEnter Gate ID to search: ";
+            cin >> id;
+
+            circuit.searchGate(id);
+
+            break;
+        }
+
+        case 5:
+            circuit.displayForward();
+            break;
+
+        case 6:
+            circuit.displayBackward();
+            break;
+
+        case 7:
+            cout << "\nExiting program...\n";
+            break;
+
+        default:
+            cout << "\nInvalid choice. Please try again.\n";
+        }
+
+    } while (choice != 7);
 
     return 0;
 }
