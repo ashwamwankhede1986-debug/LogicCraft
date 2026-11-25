@@ -5,30 +5,6 @@ LogicCraft is an interdisciplinary visual logic-circuit simulator designed and i
 
 ---
 
-## 🚀 Single Unified Executable: `LogicCraft.exe`
-
-All four academic subject modules have been compiled and linked into **one single standalone executable**:
-👉 **`LogicCraft.exe`**
-
-Double-clicking `LogicCraft.exe` opens an interactive master console allowing you to:
-1. Run **C++ / Programming Lab** (CO1 Arrays & CO2 Linked List)
-2. Run **Computer Graphics / OpenGL** verification & launch the live visual window
-3. Run **Java / Problem Solving Using OOP** (CO1 Fundamentals & CO2 Polymorphic Hierarchy / Lambdas)
-4. Run **COA / 64-Bit Assembly (ALP)** (CO1 Processor Model & CO2 Native x86-64 Machine Code)
-5. Execute the **Full 12-Step Review-2 Academic Demonstration**
-6. Launch the **Interactive OpenGL Circuit Canvas Window** directly (drag gates, zoom, pan, toggle inputs)
-
-### Command-Line Arguments:
-You can also launch specific modules or automated checks directly:
-* `.\LogicCraft.exe` (Interactive Master Menu)
-* `.\LogicCraft.exe --all` (Runs full 12-step review sequence)
-* `.\LogicCraft.exe --graphics` (Launches OpenGL interactive canvas directly)
-* `.\LogicCraft.exe --cpp` (Runs C++ Lab demonstration)
-* `.\LogicCraft.exe --java` (Runs Java OOP demonstration)
-* `.\LogicCraft.exe --coa` (Runs COA / 64-bit Assembly demonstration)
-
----
-
 ## 🏛️ Academic Course Outcome (CO) Mapping
 
 | Subject | CO1 | CO2 | Review-2 Demonstration Evidence |
@@ -45,12 +21,12 @@ You can also launch specific modules or automated checks directly:
 ```
 LogicCraft/
 │
-├── LogicCraft.exe                      # ⭐ ALL-IN-ONE UNIFIED STANDALONE EXECUTABLE
-├── build_single_exe.bat                # Recompiles the single LogicCraft.exe from source
 ├── README.md                           # Main Project & Viva Documentation
-├── libgcc_s_seh-1.dll                  # Portable runtime DLL
-├── libstdc++-6.dll                     # Portable runtime DLL
-├── libwinpthread-1.dll                 # Portable runtime DLL
+├── run_cpp.bat                         # Batch launcher: C++ Module
+├── run_graphics.bat                    # Batch launcher: OpenGL Visual Window
+├── run_java.bat                        # Batch launcher: Java Module
+├── run_coa.bat                         # Batch launcher: COA / 64-bit Assembly Module
+├── run_all.ps1                         # Master PowerShell script: Full 12-step demo
 │
 ├── Cpp/                                # PART 1: Programming Lab (C++)
 │   ├── Gates/ (Gate.h, Gate.cpp)
@@ -207,3 +183,29 @@ Follow this exact flow during project review:
    * The abstract class `LogicGate` declares `abstract boolean evaluate()`. At runtime, a reference of type `LogicGate` points to an instance of `ANDGate`, `ORGate`, or `NOTGate`. The JVM executes the concrete overridden method via dynamic method dispatch (vtable).
 6. **How does the 64-Bit Assembly implementation work in COA CO2?**
    * It uses native x86-64 machine instructions (`mov`, `and`, `or`, `cmp`) following the 64-bit ABI. Operands are passed in 64-bit registers (`RCX`, `RDX`), executed by the hardware ALU, and returned in `RAX`. Conditional branches (`je`, `jne`) inspect the Zero Flag (`ZF`) to alter control flow.
+
+## Web Workbench: Login, Session Security, and Native DSA Bridge
+
+### Start the browser application
+1. Install Node.js (LTS).
+2. Double-click `run_web.bat`.
+3. Open `http://localhost:3000` if the browser did not open automatically.
+4. Sign in with the local demo account: **engineer / engineer123**. Change or replace this account before exposing the server to any network.
+5. Use **Sign out** in the left sidebar to end the session.
+
+You can register another local account from the sign-in screen. Sessions are held in memory and expire after 8 hours; restarting the server invalidates existing sessions. Protected API endpoints return HTTP 401 when no valid session cookie or Bearer token is supplied.
+
+
+### Native C++ search and sorting bridge
+The Component Analysis Search and Sorting screens attempt to use the native C++ implementation first, then fall back to the existing JavaScript implementation when the bridge is not built.
+
+- In `Cpp`, run `build_dsa_bridge.bat` (requires MinGW-w64 `g++` in PATH).
+- The generated executable is `Cpp/logiccraft_dsa_bridge.exe`.
+- Supported native algorithms: Linear/Binary Search; Bubble/Selection/Insertion/Quick/Merge Sort.
+- Native bridge input is sanitized and capped at 5,000 records.
+- The bridge CLI and input/output protocol are documented in `Cpp/README_DSA_BRIDGE.md`.
+
+### Important security and graphics limitations
+- This is an academic localhost prototype, not a production multi-user service. It uses a demo default password, PBKDF2 at the project's current iteration count, an in-memory session store, and no dedicated CSRF token or login rate limiter. Do not expose the server publicly without a security review and default-account removal.
+- The current 3D view is a projected 2.5D/canvas hardware-package illustration, not a full 3D mesh/WebGL engine. Pins and wire routes are not fully 3D transformed, so large rotations may visually misalign.
+- The x86-64 assembly execution path needs verification on Windows x64 because the assembly ABI differs between Windows and Linux.

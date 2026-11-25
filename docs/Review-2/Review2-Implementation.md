@@ -20,7 +20,6 @@ The project unites four academic computer science disciplines into one integrate
 In strict adherence to academic review guidelines:
 - **Review 2 implements ONLY CO1 and CO2 for each subject.**
 - Higher Course Outcomes (CO3, CO4, CO5, CO6) are explicitly kept out of scope, with modular extension interfaces provided for subsequent reviews.
-- **Single Master Executable (`LogicCraft.exe`):** All four subjects are compiled and linked together into a unified standalone executable file that provides an interactive review menu, launches the native OpenGL graphical window, and coordinates the entire 12-step demonstration flow.
 
 ---
 

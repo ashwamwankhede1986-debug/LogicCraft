@@ -1,10 +1,3 @@
-#ifndef UNICODE
-#define UNICODE
-#endif
-#ifndef _UNICODE
-#define _UNICODE
-#endif
-
 #include "GLWindow.h"
 #include <iostream>
 
@@ -108,14 +101,12 @@ bool GLWindow::init() {
     wc.style = CS_OWNDC | CS_HREDRAW | CS_VREDRAW;
     wc.lpfnWndProc = GLWindow::WindowProc;
     wc.hInstance = hInstance;
-    wc.lpszClassName = L"LogicCraftGLWindowClass";
+    wc.lpszClassName = "LogicCraftGLWindowClass";
     wc.hCursor = LoadCursor(NULL, IDC_ARROW);
 
     if (!RegisterClass(&wc)) {
-        if (GetLastError() != ERROR_CLASS_ALREADY_EXISTS) {
-            std::cerr << "[OpenGL Error] Failed to register window class!\n";
-            return false;
-        }
+        std::cerr << "[OpenGL Error] Failed to register window class!\n";
+        return false;
     }
 
     RECT rect = {0, 0, width, height};
@@ -123,8 +114,8 @@ bool GLWindow::init() {
 
     hwnd = CreateWindowEx(
         0,
-        L"LogicCraftGLWindowClass",
-        L"LogicCraft — Visual Logic Gate Simulator (Review 2: CO1 & CO2)",
+        "LogicCraftGLWindowClass",
+        "LogicCraft — Visual Logic Gate Simulator (Review 2: CO1 & CO2)",
         WS_OVERLAPPEDWINDOW | WS_VISIBLE,
         CW_USEDEFAULT, CW_USEDEFAULT,
         rect.right - rect.left, rect.bottom - rect.top,

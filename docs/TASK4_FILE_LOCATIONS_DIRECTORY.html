@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>LogicCraft — Task 4 Complete File Locations & CO Directory</title>
+<style>
+    @page {
+        size: A4 portrait;
+        margin: 14mm 12mm 14mm 12mm;
+    }
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        color: #1e293b;
+        background: #ffffff;
+        font-size: 10pt;
+        line-height: 1.45;
+    }
+    
+    /* Header Box */
+    .header-box {
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        color: #ffffff;
+        padding: 20px 22px;
+        border-radius: 8px;
+        margin-bottom: 16px;
+        border-left: 6px solid #38bdf8;
+    }
+    .header-box h1 {
+        font-size: 19pt;
+        font-weight: 700;
+        color: #38bdf8;
+        letter-spacing: -0.5px;
+        margin-bottom: 4px;
+    }
+    .header-box .subtitle {
+        font-size: 11.5pt;
+        font-weight: 500;
+        color: #f1f5f9;
+        margin-bottom: 8px;
+    }
+    .header-box .meta-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+        font-size: 8.5pt;
+        color: #94a3b8;
+        border-top: 1px solid #334155;
+        padding-top: 8px;
+        margin-top: 6px;
+    }
+    .header-box .meta-grid strong {
+        color: #e2e8f0;
+    }
+
+    /* Section Styling */
+    h2 {
+        font-size: 12.5pt;
+        color: #0f172a;
+        border-bottom: 2px solid #0284c7;
+        padding-bottom: 4px;
+        margin-top: 16px;
+        margin-bottom: 8px;
+        font-weight: 700;
+        page-break-after: avoid;
+    }
+    h3 {
+        font-size: 10.5pt;
+        color: #0369a1;
+        margin-top: 10px;
+        margin-bottom: 4px;
+        font-weight: 600;
+        page-break-after: avoid;
+    }
+    p {
+        margin-bottom: 6px;
+        text-align: justify;
+    }
+
+    /* Badges */
+    .badge {
+        display: inline-block;
+        padding: 2px 6px;
+        font-size: 7.5pt;
+        font-weight: 600;
+        border-radius: 4px;
+        text-transform: uppercase;
+        margin-right: 4px;
+    }
+    .badge-blue   { background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
+    .badge-green  { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+    .badge-purple { background: #f3e8ff; color: #7e22ce; border: 1px solid #e9d5ff; }
+    .badge-amber  { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
+
+    /* Tables */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 6px;
+        margin-bottom: 12px;
+        font-size: 8.5pt;
+        page-break-inside: auto;
+    }
+    tr {
+        page-break-inside: avoid;
+        page-break-after: auto;
+    }
+    th, td {
+        border: 1px solid #cbd5e1;
+        padding: 5px 7px;
+        text-align: left;
+        vertical-align: top;
+    }
+    th {
+        background: #f1f5f9;
+        color: #0f172a;
+        font-weight: 600;
+    }
+    tr:nth-child(even) td {
+        background: #f8fafc;
+    }
+    .code-cell {
+        font-family: Consolas, "Courier New", monospace;
+        font-size: 8pt;
+        color: #0f172a;
+        word-break: break-all;
+    }
+    .file-path {
+        font-family: Consolas, "Courier New", monospace;
+        font-weight: 600;
+        color: #0369a1;
+        word-break: break-all;
+    }
+
+    /* Cards / Highlights */
+    .card {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        padding: 10px 12px;
+        margin-bottom: 10px;
+        page-break-inside: avoid;
+    }
+    .card-title {
+        font-weight: 700;
+        color: #0f172a;
+        font-size: 9.5pt;
+        margin-bottom: 4px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .footer {
+        margin-top: 18px;
+        border-top: 1px solid #cbd5e1;
+        padding-top: 6px;
+        font-size: 8pt;
+        color: #64748b;
+        text-align: center;
+    }
+    .page-break {
+        page-break-before: always;
+    }
+</style>
+</head>
+<body>
+
+<!-- Header Banner -->
+<div class="header-box">
+    <h1>LOGICCRAFT — TASK 4 FILE LOCATIONS DIRECTORY</h1>
+    <div class="subtitle">Complete Master Index of Source Code, Tests, Scripts & Documentation for Course Outcomes</div>
+    <div class="meta-grid">
+        <div><strong>Project:</strong> LogicCraft Visual Simulator</div>
+        <div><strong>Task Phase:</strong> Task 4 & CO4 Integration</div>
+        <div><strong>Date:</strong> 18 November 2026</div>
+        <div><strong>Audit Status:</strong> 100% Implemented & Verified</div>
+    </div>
+</div>
+
+<h2>1. Overview of Task 4 Multi-Subject Architecture</h2>
+<p>
+    Task 4 in <strong>LogicCraft</strong> unifies advanced course competencies across four major academic domains: 
+    <strong>Computer Organization and Architecture (COA) / 64-Bit Assembly</strong>, <strong>Programming Lab in C++</strong>, 
+    <strong>Computer Graphics (OpenGL)</strong>, and <strong>Problem Solving using OOP (Java)</strong>. 
+    Every requirement is implemented strictly within the native project architecture, adhering to academic constraints and verified by automated regression test suites.
+</p>
+
+<h2>2. COA / 64-Bit Assembly (CO4) — Complete File Locations</h2>
+<div class="card">
+    <div class="card-title">
+        <span>Module: Computer Organization & Architecture Lab (COA)</span>
+        <span class="badge badge-purple">CO4 Complete</span>
+    </div>
+    <p>
+        <strong>CO4 Competency:</strong> Processor Architecture Modeling — Complete 10-Operation ALU, Dedicated Hardwired & Microprogrammed Control Units, Control Signal Bus, 5-Stage Instruction Pipeline with RAW Forwarding and Load-Use Hazard Stalling, and 3 Core Processor-Level Functionalities.
+    </p>
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th style="width: 28%;">Subsystem / Component</th>
+            <th style="width: 38%;">Exact Source File Path</th>
+            <th style="width: 34%;">Key Classes, Structs & Symbols</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Complete 10-Operation ALU Design</strong></td>
+            <td>
+                <span class="file-path">COA/BooleanOperations/BooleanALU.h</span><br>
+                <span class="file-path">COA/BooleanOperations/BooleanALU.cpp</span>
+            </td>
+            <td class="code-cell">
+                enum ALUOpcode (OP_AND..OP_CMP),<br>
+                struct ALUFlags (ZF, SF, CF, OF),<br>
+                BooleanALU::execute(),<br>
+                BooleanALU::printALUDiagram()
+            </td>
+        </tr>
+        <tr>
+            <td><strong>Native 64-Bit AMD64 Assembly</strong></td>
+            <td>
+                <span class="file-path">COA/ALP/logic_ops_64.s</span>
+            </td>
+            <td class="code-cell">
+                asm_and_64, asm_or_64, asm_not_64,<br>
+                asm_xor_64, asm_nand_64, asm_nor_64,<br>
+                asm_xnor_64, asm_add_64, asm_sub_64,<br>
+                asm_cmp_64, asm_branch_verify_64,<br>
+                asm_mul_successive_addition_64,<br>
+                asm_parse_gate_type_64
+            </td>
+        </tr>
+        <tr>
+            <td><strong>Dedicated Control Unit & Control Signal Table</strong></td>
+            <td>
+                <span class="file-path">COA/ControlUnit/ControlUnit.h</span><br>
+                <span class="file-path">COA/ControlUnit/ControlUnit.cpp</span>
+            </td>
+            <td class="code-cell">
+                struct ControlSignals,<br>
+                struct InstructionWord,<br>
+                class ControlUnit,<br>
+                ControlUnit::generateSignals(),<br>
+                ControlUnit::printControlSignalTable()
+            </td>
+        </tr>
+        <tr>
+            <td><strong>Hardwired Control Unit</strong></td>
+            <td>
+                <span class="file-path">COA/ControlUnit/ControlUnit.h</span><br>
+                <span class="file-path">COA/ControlUnit/ControlUnit.cpp</span>
+            </td>
+            <td class="code-cell">
+                class HardwiredControl,<br>
+                HardwiredControl::decode(),<br>
+                Combinational Boolean gate equations
+            </td>
+        </tr>
+        <tr>
+            <td><strong>Microprogrammed Control Unit</strong></td>
+            <td>
+                <span class="file-path">COA/ControlUnit/ControlUnit.h</span><br>
+                <span class="file-path">COA/ControlUnit/ControlUnit.cpp</span>
+            </td>
+            <td class="code-cell">
+                class MicroprogrammedControl,<br>
+                struct MicroInstruction, Control ROM,<br>
+                Control Address Register (CAR),<br>
+                MicroprogrammedControl::executeMicrocode()
+            </td>
+        </tr>
+        <tr>
+            <td><strong>Five-Stage Instruction Pipeline Simulator</strong></td>
+            <td>
+                <span class="file-path">COA/Pipeline/PipelineSimulator.h</span><br>
+                <span class="file-path">COA/Pipeline/PipelineSimulator.cpp</span>
+            </td>
+            <td class="code-cell">
+                class PipelineSimulator,<br>
+                Registers: IF/ID, ID/EX, EX/MEM, MEM/WB,<br>
+                stageIF(), stageID(), stageEX(),<br>
+                stageMEM(), stageWB(), stepCycle(),<br>
+                printPipelineTimingMatrix()
+            </td>
+        </tr>
+        <tr>
+            <td><strong>Pipeline Hazard Detection & Forwarding</strong></td>
+            <td>
+                <span class="file-path">COA/Pipeline/PipelineSimulator.h</span><br>
+                <span class="file-path">COA/Pipeline/PipelineSimulator.cpp</span>
+            </td>
+            <td class="code-cell">
+                evaluateForwardingUnit() (ForwardA, ForwardB),<br>
+                evaluateHazardDetection() (Load-Use Stall),<br>
+                1-cycle NOP bubble insertion,<br>
+                printHazardAnalysis()
+            </td>
+        </tr>
+        <tr>
+            <td><strong>CPU Simulator & 3 Core Functionalities</strong></td>
+            <td>
+                <span class="file-path">COA/ProcessorSimulation/ProcessorSimulator.h</span><br>
+                <span class="file-path">COA/ProcessorSimulation/ProcessorSimulator.cpp</span>
+            </td>
+            <td class="code-cell">
+                class ProcessorSimulator (R0..R7, 256 DataMem),<br>
+                demonstrateLogicGateFunctionality(),<br>
+                demonstratePropagationDelayMultiplication(),<br>
+                demonstrateNetlistOpcodeDecoding()
+            </td>
+        </tr>
+        <tr>
+            <td><strong>COA Automated Integration Test Suite</strong></td>
+            <td>
+                <span class="file-path">COA/Tests/Task4IntegrationTests.h</span><br>
+                <span class="file-path">COA/Tests/Task4IntegrationTests.cpp</span>
+            </td>
+            <td class="code-cell">
+                testALUComplete10OperationsAndFlags(),<br>
+                testControlUnitSignalsAndTechniques(),<br>
+                testFiveStagePipelineAndHazards(),<br>
+                testProcessorSimulatorThreeCoreFunctionalities(),<br>
+                runCOATask4IntegrationSuite() (8/8 PASS)
+            </td>
+        </tr>
+        <tr>
+            <td><strong>COA Test Runner Entry Point</strong></td>
+            <td>
+                <span class="file-path">COA/Tests/TestALP.cpp</span>
+            </td>
+            <td class="code-cell">
+                main() -> testProcessorSimulationCO1(),<br>
+                test64BitAssemblyCO2(),<br>
+                testArithmeticSuccessiveAdditionCO3(),<br>
+                testStringProcessingCO3(),<br>
+                runCOATask4IntegrationSuite()
+            </td>
+        </tr>
+        <tr>
+            <td><strong>COA Interactive Console Demonstration</strong></td>
+            <td>
+                <span class="file-path">COA/main.cpp</span>
+            </td>
+            <td class="code-cell">
+                demonstrateCO1_ProcessorModeling(),<br>
+                demonstrateCO2_64BitAssembly(),<br>
+                demonstrateCO3_ArithmeticAndStringProcessing(),<br>
+                demonstrateCO4_IntegrationAndDemonstration()
+            </td>
+        </tr>
+        <tr>
+            <td><strong>COA Authoritative Technical Documentation</strong></td>
+            <td>
+                <span class="file-path">docs/COA_CO4_IMPLEMENTATION.md</span>
+            </td>
+            <td class="code-cell">
+                Complete 12-section audit, diagrams, tables,<br>
+                captured execution traces & verification guide
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="page-break"></div>
+
+<h2>3. Programming Lab & Problem Solving (C++) — Task 4 File Locations</h2>
+<div class="card">
+    <div class="card-title">
+        <span>Module: C++ Programming Lab (CO4 & CO5) & Problem Solving (CO4)</span>
+        <span class="badge badge-blue">Procedural C++</span>
+    </div>
+    <p>
+        <strong>Academic Syllabus Constraint:</strong> Strict procedural C++ only. No classes, inheritance, polymorphism, encapsulation, or OOP design patterns are used. All logic uses C structs, pointers, arrays, and pure functions.
+    </p>
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th style="width: 25%;">CO / Category</th>
+            <th style="width: 38%;">Exact Source File Path</th>
+            <th style="width: 37%;">Key Functions & Structs Implemented</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>CO4: Searching Algorithms</strong></td>
+            <td>
+                <span class="file-path">Cpp/Searching/Searching.h</span><br>
+                <span class="file-path">Cpp/Searching/Searching.cpp</span>
+            </td>
+            <td class="code-cell">
+                linearSearchById(arr, size, id, comparisons),<br>
+                linearSearchByName(arr, size, name, comparisons),<br>
+                binarySearchById(arr, size, id, comparisons),<br>
+                binarySearchByName(arr, size, name, comparisons)
+            </td>
+        </tr>
+        <tr>
+            <td><strong>CO4: Sorting Algorithms</strong></td>
+            <td>
+                <span class="file-path">Cpp/Sorting/Sorting.h</span><br>
+                <span class="file-path">Cpp/Sorting/Sorting.cpp</span>
+            </td>
+            <td class="code-cell">
+                bubbleSortComponents(arr, size, field, order, comp, swaps),<br>
+                selectionSortComponents(arr, size, field, order, comp, swaps),<br>
+                Early-termination flag optimization on Bubble Sort
+            </td>
+        </tr>
+        <tr>
+            <td><strong>CO5: Hash Table Data Structure</strong></td>
+            <td>
+                <span class="file-path">Cpp/Hashing/HashTable.h</span><br>
+                <span class="file-path">Cpp/Hashing/HashTable.cpp</span>
+            </td>
+            <td class="code-cell">
+                struct ComponentHashTable (Fixed 17-slot modulus),<br>
+                hashString(str, capacity) [Polynomial rolling hash],<br>
+                initHashTable(), insertHashTable(),<br>
+                searchHashTableById(), deleteHashTableById(),<br>
+                Linear probing collision handling & tombstones
+            </td>
+        </tr>
+        <tr>
+            <td><strong>CO4: Empirical Benchmark</strong></td>
+            <td>
+                <span class="file-path">Cpp/Algorithms/PerformanceComparison.h</span><br>
+                <span class="file-path">Cpp/Algorithms/PerformanceComparison.cpp</span>
+            </td>
+            <td class="code-cell">
+                compareSearchPerformance(),<br>
+                compareSortPerformance(),<br>
+                measureDetailedPerformanceMetrics()
+            </td>
+        </tr>
+        <tr>
+            <td><strong>Problem Solving: Circuit Validator</strong></td>
+            <td>
+                <span class="file-path">Cpp/CircuitEngine/CircuitValidator.h</span><br>
+                <span class="file-path">Cpp/CircuitEngine/CircuitValidator.cpp</span>
+            </td>
+            <td class="code-cell">
+                validateCircuit(circuit, report),<br>
+                hasCyclicDependency() [DFS 3-color cycle detection],<br>
+                runCircuitValidationScenarios() (Scenarios 1, 2, 3)
+            </td>
+        </tr>
+        <tr>
+            <td><strong>C++ Task 4 Automated Test Suite</strong></td>
+            <td>
+                <span class="file-path">Cpp/Tests/Task4Tests.h</span><br>
+                <span class="file-path">Cpp/Tests/Task4Tests.cpp</span>
+            </td>
+            <td class="code-cell">
+                testSearchingAlgorithms(),<br>
+                testSortingAlgorithms(),<br>
+                testHashTableOperations(),<br>
+                testCircuitValidatorScenarios(),<br>
+                runTask4TestSuite()
+            </td>
+        </tr>
+        <tr>
+            <td><strong>C++ Master Test Runner</strong></td>
+            <td>
+                <span class="file-path">Cpp/Tests/TestRunner.cpp</span>
+            </td>
+            <td class="code-cell">
+                Executes all suites: CO1 (Arrays), CO2 (Linked Lists),<br>
+                CO3 (Stack & Queue), CO4 (Search/Sort), CO5 (Hash Table)
+            </td>
+        </tr>
+        <tr>
+            <td><strong>C++ Interactive Console Demo</strong></td>
+            <td>
+                <span class="file-path">Cpp/main.cpp</span>
+            </td>
+            <td class="code-cell">
+                Menu-driven interactive demonstration for examiner review
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>4. Computer Graphics / OpenGL (CO4) — File Locations</h2>
+<div class="card">
+    <div class="card-title">
+        <span>Module: Computer Graphics Lab (OpenGL)</span>
+        <span class="badge badge-green">CO4 Sub-Pixel Precision</span>
+    </div>
+    <p>
+        <strong>CO4 Competency:</strong> Authentic ANSI/IEEE Std 91-1984 Logic Gate Symbol Geometries and High-Precision Sub-Pixel Pin Coordinate Alignment.
+    </p>
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th style="width: 25%;">Component / Role</th>
+            <th style="width: 38%;">Exact Source File Path</th>
+            <th style="width: 37%;">Key Methods & Features Implemented</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>ANSI/IEEE Logic Gate Renderer</strong></td>
+            <td>
+                <span class="file-path">Computer Graphics/Rendering/GateRenderer.h</span><br>
+                <span class="file-path">Computer Graphics/Rendering/GateRenderer.cpp</span>
+            </td>
+            <td class="code-cell">
+                drawANDGate(), drawNANDGate(), drawORGate(),<br>
+                drawNORGate(), drawXORGate(), drawXNORGate(),<br>
+                drawNOTGate(), drawInversionBubble(),<br>
+                getGatePinPosition() [&plusmn;0.001 unit pin alignment]
+            </td>
+        </tr>
+        <tr>
+            <td><strong>Interactive 2D Canvas & Showcase</strong></td>
+            <td>
+                <span class="file-path">Computer Graphics/Canvas/Canvas.h</span><br>
+                <span class="file-path">Computer Graphics/Canvas/Canvas.cpp</span>
+            </td>
+            <td class="code-cell">
+                initAll7GatesShowcase() [Key '7' displays all 7 gates],<br>
+                cycleSelectedGateType() [Key 'G' dynamically morphs gate],<br>
+                renderHUD(), clipWire() [Cohen-Sutherland]
+            </td>
+        </tr>
+        <tr>
+            <td><strong>Camera & Transformations</strong></td>
+            <td>
+                <span class="file-path">Computer Graphics/Transformations/Camera.h</span><br>
+                <span class="file-path">Computer Graphics/Transformations/Camera.cpp</span>
+            </td>
+            <td class="code-cell">
+                Camera::pan(), Camera::zoom(), Camera::reset(),<br>
+                applyTransformations(), screenToWorldCoordinates()
+            </td>
+        </tr>
+        <tr>
+            <td><strong>OpenGL Window & Test Harness</strong></td>
+            <td>
+                <span class="file-path">Computer Graphics/OpenGL/GLWindow.cpp</span><br>
+                <span class="file-path">Computer Graphics/main.cpp</span>
+            </td>
+            <td class="code-cell">
+                logiccraft_cg.exe --test (Automated graphics tests),<br>
+                Interactive Win32 OpenGL render loop
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="page-break"></div>
+
+<h2>5. Problem Solving Using OOP (Java) — Task 4 File Locations</h2>
+<div class="card">
+    <div class="card-title">
+        <span>Module: Problem Solving Using OOP (Java)</span>
+        <span class="badge badge-amber">CO4 Files & Generics</span>
+    </div>
+    <p>
+        <strong>CO4 Competency:</strong> Robust Multi-Format File Persistence (JSON Circuit Save/Load, Stream Validation, Corrupted File Recovery) and Type-Safe Java Generic Collections.
+    </p>
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th style="width: 25%;">Component / Role</th>
+            <th style="width: 38%;">Exact Source File Path</th>
+            <th style="width: 37%;">Key Methods & Classes Implemented</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>File Persistence Manager</strong></td>
+            <td>
+                <span class="file-path">java/src/logiccraft/file/ProjectFileManager.java</span>
+            </td>
+            <td class="code-cell">
+                saveCircuitToFile(circuit, file),<br>
+                loadCircuitFromFile(file),<br>
+                validateJsonStructure(), corrupted file fallback,<br>
+                Atomic file write operations
+            </td>
+        </tr>
+        <tr>
+            <td><strong>Generic Collections Architecture</strong></td>
+            <td>
+                <span class="file-path">java/src/logiccraft/collections/ComponentList.java</span>
+            </td>
+            <td class="code-cell">
+                class ComponentList&lt;T extends CircuitPrintable&gt;,<br>
+                filter(Predicate&lt;T&gt;), remove(T), clear(),<br>
+                Type-safe reusable container for gates and wires
+            </td>
+        </tr>
+        <tr>
+            <td><strong>Task 4 Java Automated Test Suite</strong></td>
+            <td>
+                <span class="file-path">java/src/test/Task4FileGenericTest.java</span><br>
+                <span class="file-path">java/src/test/FileTest.java</span>
+            </td>
+            <td class="code-cell">
+                testFileSaveAndLoad(), testCorruptedFileHandling(),<br>
+                testGenericComponentListFiltering(),<br>
+                testGenericTypeSafety()
+            </td>
+        </tr>
+        <tr>
+            <td><strong>Java Application Main & GUI</strong></td>
+            <td>
+                <span class="file-path">java/src/logiccraft/Main.java</span><br>
+                <span class="file-path">java/src/logiccraft/ui/LogicCraftUI.java</span>
+            </td>
+            <td class="code-cell">
+                Desktop Swing Canvas with "Save Circuit" and "Load Circuit"<br>
+                file dialog triggers
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>6. Master Demonstration Scripts & Full-Stack System File Locations</h2>
+<table>
+    <thead>
+        <tr>
+            <th style="width: 25%;">Execution Role</th>
+            <th style="width: 38%;">Exact File Path</th>
+            <th style="width: 37%;">Operational Purpose</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Master Review Test Harness</strong></td>
+            <td><span class="file-path">run_all.ps1</span></td>
+            <td>Executes the complete test sequence across all 4 subjects in one command with 100% pass verification.</td>
+        </tr>
+        <tr>
+            <td><strong>COA Execution Script</strong></td>
+            <td><span class="file-path">run_coa.bat</span></td>
+            <td>Compiles and runs the COA hardware demonstration with MinGW/UCRT64 environment.</td>
+        </tr>
+        <tr>
+            <td><strong>C++ Execution Script</strong></td>
+            <td><span class="file-path">run_cpp.bat</span></td>
+            <td>Compiles and runs the C++ procedural demonstration and unit tests.</td>
+        </tr>
+        <tr>
+            <td><strong>Graphics Execution Script</strong></td>
+            <td><span class="file-path">run_graphics.bat</span></td>
+            <td>Compiles and launches the interactive OpenGL canvas window.</td>
+        </tr>
+        <tr>
+            <td><strong>Java Execution Script</strong></td>
+            <td><span class="file-path">run_java.bat</span></td>
+            <td>Builds Java sources and executes unit tests or launches Swing desktop GUI.</td>
+        </tr>
+        <tr>
+            <td><strong>Full-Stack Backend Server</strong></td>
+            <td><span class="file-path">backend/server.js</span></td>
+            <td>Node.js server exposing REST APIs for CO-Mapping, test runners, and in-memory Hash Table.</td>
+        </tr>
+        <tr>
+            <td><strong>Interactive Web Dashboard</strong></td>
+            <td>
+                <span class="file-path">frontend/index.html</span><br>
+                <span class="file-path">frontend/app.js</span>
+            </td>
+            <td>Full-stack visual circuit simulator with dedicated Task 4 tabs for Search, Sort, Hash Table, and COA.</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>7. Complete Project Directory Hierarchy</h2>
+<pre style="background: #f1f5f9; padding: 10px; border-radius: 6px; font-family: Consolas, monospace; font-size: 7.5pt; color: #0f172a; line-height: 1.35;">
+LogicCraft/
+├── COA/
+│   ├── ALP/
+│   │   └── logic_ops_64.s                       [Native 64-bit AMD64 assembly routines]
+│   ├── BooleanOperations/
+│   │   ├── BooleanALU.h                         [10-Operation ALU declarations & Flags]
+│   │   └── BooleanALU.cpp                       [ALU implementation & ASCII diagram]
+│   ├── ControlUnit/
+│   │   ├── ControlUnit.h                        [Control signals bus & model headers]
+│   │   └── ControlUnit.cpp                      [Hardwired & Microprogrammed engines]
+│   ├── Pipeline/
+│   │   ├── PipelineSimulator.h                  [5-stage pipeline registers & hazard headers]
+│   │   └── PipelineSimulator.cpp                [Pipeline execution, forwarding & timing matrix]
+│   ├── ProcessorSimulation/
+│   │   ├── ProcessorSimulator.h                 [R0..R7 registers, 256 data memory, 3 core funcs]
+│   │   └── ProcessorSimulator.cpp               [RTL simulation & assembly verification]
+│   ├── Tests/
+│   │   ├── Task4IntegrationTests.h              [8 integration test suite declarations]
+│   │   ├── Task4IntegrationTests.cpp            [Full CO4 automated integration assertions]
+│   │   └── TestALP.cpp                          [COA master unit test harness entry point]
+│   └── main.cpp                                 [COA Review-2 interactive demonstration console]
+├── Cpp/
+│   ├── Searching/ (Searching.h, Searching.cpp)  [Linear & Binary search algorithms]
+│   ├── Sorting/ (Sorting.h, Sorting.cpp)        [Bubble sort & Selection sort]
+│   ├── Hashing/ (HashTable.h, HashTable.cpp)    [17-slot hash table with linear probing]
+│   ├── Algorithms/                              [Empirical performance comparison]
+│   ├── CircuitEngine/CircuitValidator.cpp       [Smart circuit validation & DFS cycle detection]
+│   └── Tests/ (Task4Tests.cpp, TestRunner.cpp)  [C++ automated unit and integration tests]
+├── Computer Graphics/
+│   ├── Rendering/GateRenderer.cpp               [ANSI/IEEE 7-gate renderer & pin alignment]
+│   ├── Canvas/Canvas.cpp                        [7-gate showcase arrangement & dynamic cycling]
+│   └── OpenGL/GLWindow.cpp                      [Win32 OpenGL double-buffered rendering]
+├── java/
+│   └── src/
+│       ├── logiccraft/file/ProjectFileManager.java [JSON save/load & corruption recovery]
+│       ├── logiccraft/collections/ComponentList.java [Generic collection with type safety]
+│       └── test/Task4FileGenericTest.java       [Java Task 4 test suites]
+├── docs/
+│   ├── COA_CO4_IMPLEMENTATION.md                [Authoritative COA CO4 technical specification]
+│   ├── TASK4_CO_FILE_MAPPING.md                 [Comprehensive multi-subject mapping matrix]
+│   └── TASK4_FILE_LOCATIONS_DIRECTORY.html      [This printable file location directory]
+├── run_all.ps1                                  [Master multi-subject evaluation harness]
+├── run_coa.bat                                  [COA module automated build & run script]
+└── backend/server.js                            [Full-stack dashboard & execution API server]
+</pre>
+
+<div class="footer">
+    LogicCraft Visual Logic Gate Simulator &copy; 2026 &bull; Task 4 File Locations &amp; Course Outcomes Directory &bull; Generated for Academic Code Audit
+</div>
+
+</body>
+</html>

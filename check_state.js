@@ -1,0 +1,30 @@
+const fs = require('fs');
+const html = fs.readFileSync('frontend/index.html', 'utf8');
+console.log('screen-reports:', html.includes('data-screen="screen-reports"'));
+console.log('Technical Reports:', html.includes('Technical Reports'));
+console.log('screen-documentation:', html.includes('data-screen="screen-documentation"'));
+console.log('Test Verification Evidence:', html.includes('Test &amp; Verification Evidence') || html.includes('Test & Verification Evidence'));
+console.log('libSearchInput:', html.includes('id="libSearchInput"'));
+console.log('coaArithOp:', html.includes('id="coaArithOp"'));
+console.log('designerPalette:', html.includes('id="designerPalette"'));
+console.log('btnTogglePalette:', html.includes('id="btnTogglePalette"'));
+console.log('sortAlgo insertion:', html.includes('value="insertion"'));
+console.log('sortAlgo quick:', html.includes('value="quick"'));
+console.log('sortAlgo merge:', html.includes('value="merge"'));
+console.log('File Locations Directory:', html.includes('File Locations Directory'));
+console.log('HTML size:', html.length);
+
+const app = fs.readFileSync('frontend/app.js', 'utf8');
+console.log('\n--- app.js checks ---');
+console.log('libSearchInput in app.js:', app.includes('libSearchInput'));
+console.log('initComponentLibrary:', app.includes('initComponentLibrary'));
+console.log('rotateSelectedGroup:', app.includes('rotateSelectedGroup'));
+console.log('btnRotate3DGroup:', app.includes('btnRotate3DGroup'));
+
+const server = fs.readFileSync('backend/server.js', 'utf8');
+console.log('\n--- server.js checks ---');
+console.log('/api/auth/login:', server.includes('/api/auth/login'));
+console.log('/api/coa/arithmetic:', server.includes('/api/coa/arithmetic'));
+console.log('insertionSort in /api/sort:', server.includes("'insertion'") || server.includes('"insertion"'));
+console.log('quickSort in /api/sort:', server.includes("'quick'") || server.includes('"quick"'));
+console.log('mergeSort in /api/sort:', server.includes("'merge'") || server.includes('"merge"'));

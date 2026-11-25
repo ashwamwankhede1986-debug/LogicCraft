@@ -180,19 +180,34 @@ void Canvas::renderHUD(int windowWidth, int windowHeight, const Camera& camera) 
     glPushMatrix();
     glLoadIdentity();
 
-    // 1. Top Header Banner
+    // Top Header Banner
     glColor3f(0.12f, 0.15f, 0.22f);
     glBegin(GL_QUADS);
     glVertex2f(10.0f, windowHeight - 48.0f);
-    glVertex2f(520.0f, windowHeight - 48.0f);
-    glVertex2f(520.0f, windowHeight - 10.0f);
+    glVertex2f(600.0f, windowHeight - 48.0f);
+    glVertex2f(600.0f, windowHeight - 10.0f);
     glVertex2f(10.0f, windowHeight - 10.0f);
     glEnd();
 
     glColor3f(0.3f, 0.7f, 1.0f);
-    GateRenderer::drawText("LOGICCRAFT: VISUAL LOGIC GATE SIMULATOR", 20.0f, windowHeight - 32.0f, 0.78f);
+    GateRenderer::drawText("LOGICCRAFT REVIEW-2: OPENGL CANVAS (CO1 + CO2)", 20.0f, windowHeight - 32.0f, 0.85f);
 
-    // 2. Camera Stats Box (Top Right)
+    // Bottom Help Controls Box
+    glColor3f(0.09f, 0.12f, 0.18f);
+    glBegin(GL_QUADS);
+    glVertex2f(10.0f, 10.0f);
+    glVertex2f(720.0f, 10.0f);
+    glVertex2f(720.0f, 95.0f);
+    glVertex2f(10.0f, 95.0f);
+    glEnd();
+
+    glColor3f(0.8f, 0.85f, 0.95f);
+    GateRenderer::drawText("[CO2 TRANSFORMS] L-CLICK & DRAG: MOVE GATE (TRANSLATION)", 20.0f, 74.0f, 0.7f);
+    GateRenderer::drawText("[CO2 VIEWPORT]   R-CLICK DRAG / ARROWS: PAN CANVAS", 20.0f, 54.0f, 0.7f);
+    GateRenderer::drawText("[CO2 SCALING]    WHEEL / +/-: ZOOM | R: RESET VIEW", 20.0f, 34.0f, 0.7f);
+    GateRenderer::drawText("[SELECTION]      KEYS 1, 2, 3: SELECT GATE | SPACE: TOGGLE INPUT", 20.0f, 16.0f, 0.7f);
+
+    // Camera Stats Box (Top Right)
     char statusBuf[128];
     snprintf(statusBuf, sizeof(statusBuf), "ZOOM: %.2fX | PAN: (%.0f, %.0f)", camera.getZoom(), camera.getPanX(), camera.getPanY());
     glColor3f(0.09f, 0.12f, 0.18f);
@@ -205,21 +220,6 @@ void Canvas::renderHUD(int windowWidth, int windowHeight, const Camera& camera) 
 
     glColor3f(0.2f, 0.9f, 0.4f);
     GateRenderer::drawText(statusBuf, windowWidth - 300.0f, windowHeight - 32.0f, 0.75f);
-
-    // 3. Bottom Help Controls Box
-    glColor3f(0.09f, 0.12f, 0.18f);
-    glBegin(GL_QUADS);
-    glVertex2f(10.0f, 10.0f);
-    glVertex2f(660.0f, 10.0f);
-    glVertex2f(660.0f, 95.0f);
-    glVertex2f(10.0f, 95.0f);
-    glEnd();
-
-    glColor3f(0.8f, 0.85f, 0.95f);
-    GateRenderer::drawText("L-CLICK & DRAG : MOVE GATE", 20.0f, 74.0f, 0.7f);
-    GateRenderer::drawText("R-CLICK DRAG / ARROWS : PAN CANVAS", 20.0f, 54.0f, 0.7f);
-    GateRenderer::drawText("MOUSE WHEEL / +/- : ZOOM | R: RESET VIEW", 20.0f, 34.0f, 0.7f);
-    GateRenderer::drawText("KEYS 1, 2, 3: SELECT GATE | SPACE: TOGGLE INPUT", 20.0f, 16.0f, 0.7f);
 
     // Restore Projection & Modelview
     glMatrixMode(GL_PROJECTION);

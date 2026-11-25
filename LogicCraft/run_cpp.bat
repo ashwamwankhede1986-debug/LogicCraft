@@ -1,7 +1,7 @@
 @echo off
 setlocal
 echo ========================================================
-echo   LogicCraft: C++ / Programming Lab ^(CO1 ^& CO2^)
+echo   LogicCraft: C++ / Programming Lab (CO1 & CO2)
 echo ========================================================
 set PATH=C:\msys64\mingw64\bin;%PATH%
 

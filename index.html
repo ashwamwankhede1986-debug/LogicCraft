@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#101116">
+    <title>LogicCraft — Circuit Lab</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="#" aria-label="LogicCraft home">
+          <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+          <span>logiccraft<span class="brand-period">.</span></span>
+        </a>
+
+        <div class="workspace-label">WORKSPACE</div>
+        <nav class="primary-nav" aria-label="Workspace">
+          <button class="nav-item is-active" data-view="circuit" aria-current="page">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><rect x="3" y="5" width="5" height="10" rx="1"></rect><rect x="12" y="7" width="5" height="6" rx="1"></rect><path d="M8 10h4M1 7h2m-2 6h2m14-3h2"></path></svg>
+            Circuit
+          </button>
+          <button class="nav-item" data-view="truth-table">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><rect x="2.5" y="3" width="15" height="14" rx="1.5"></rect><path d="M2.5 8h15M2.5 12.5h15M7.5 3v14m5-14v14"></path></svg>
+            Truth table
+          </button>
+          <button class="nav-item" data-view="task3">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><rect x="3" y="3" width="14" height="14" rx="2"></rect><path d="M7 7h6M7 10h6M7 13h3"></path></svg>
+            Task 3
+          </button>
+        </nav>
+
+        <div class="sidebar-divider"></div>
+        <div class="workspace-label">PROJECT MODULES</div>
+        <ul class="module-list">
+          <li><span class="module-dot cpp"></span><span>C++</span><span class="module-co">CO1–CO3</span></li>
+          <li><span class="module-dot graphics"></span><span>Graphics</span><span class="module-co">CO1 · CO2 · CO6</span></li>
+          <li><span class="module-dot java"></span><span>Java / OOP</span><span class="module-co">CO1–CO3</span></li>
+          <li><span class="module-dot coa"></span><span>COA / ALP</span><span class="module-co">CO1–CO3</span></li>
+        </ul>
+
+        <div class="sidebar-bottom">
+          <div class="status-indicator" id="backend-status"><span></span> Connecting to backend</div>
+          <div class="sidebar-caption">LogicCraft · Task 3</div>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <div class="breadcrumbs"><span>Workspace</span><span class="crumb-separator">/</span><strong id="breadcrumb-current">Circuit</strong></div>
+          <div class="topbar-right"><span class="avatar" aria-label="LogicCraft project">LC</span></div>
+        </header>
+
+        <section class="page-heading">
+          <div>
+            <div class="eyebrow"><span class="eyebrow-line"></span> LOGICCRAFT SIMULATOR</div>
+            <h1 id="page-title">Circuit lab</h1>
+            <p id="page-description">Add gates, connect their inputs, and simulate your circuit.</p>
+          </div>
+          <button class="button button-quiet" id="reset-button" type="button">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4.2 8a6.2 6.2 0 1 1-.1 4M4 4.8V8h3.2"></path></svg>
+            Reset circuit
+          </button>
+        </section>
+
+        <section class="circuit-view" id="circuit-view">
+          <div class="section-toolbar">
+            <div class="section-title"><span class="live-dot"></span><div><h2 id="circuit-name">Reference circuit</h2><p><span id="circuit-count">3 gates · 2 connections</span></p></div></div>
+            <div class="toolbar-right"><button class="button button-quiet undo-button" id="undo-circuit" type="button" disabled aria-label="Undo last circuit change">↶ Undo</button><span class="simulation-label" id="simulation-status"><span></span> Simulation active</span></div>
+          </div>
+
+          <div class="circuit-layout">
+            <section class="canvas-panel" aria-label="Circuit diagram">
+              <div class="canvas-grid" aria-hidden="true"></div>
+              <div class="canvas-meta"><span>LOGIC DIAGRAM</span><span>REFERENCE / 01</span></div>
+              <div class="diagram-scroll">
+                <svg class="circuit-diagram" viewBox="0 0 850 360" role="img" aria-labelledby="diagram-title diagram-description">
+                  <title id="diagram-title">LogicCraft interactive circuit</title>
+                  <desc id="diagram-description">Select a gate to edit its connections. Add gates from the gate library.</desc>
+                  <g class="wire-group" id="wire-layer" aria-hidden="true"></g>
+                  <g class="signal-labels" id="input-label-layer"></g>
+                  <g id="gate-layer"></g>
+                  <g class="output-node" id="output-node"><text class="output-label" x="815" y="99">OUT</text><circle cx="815" cy="124" r="10"></circle><text id="diagram-output-value" x="815" y="128">0</text></g>
+                </svg>
+              </div>
+              <div class="canvas-legend"><span><i class="legend-line active"></i> HIGH signal</span><span><i class="legend-line"></i> LOW signal</span></div>
+            </section>
+
+            <aside class="control-panel" aria-label="Circuit inputs and outputs">
+              <div class="panel-heading"><div><span class="panel-kicker">LIVE CONTROLS</span><h3>Input signals</h3></div><span class="input-count">3 INPUTS</span></div>
+              <div class="input-list">
+                <div class="input-row"><div class="input-name"><span class="input-letter">A</span><div><strong>Input A</strong><small>G1 · AND</small></div></div><button class="signal-toggle" data-input="A" type="button" role="switch" aria-checked="true" aria-label="Toggle input A"><span></span><b>1</b></button></div>
+                <div class="input-row"><div class="input-name"><span class="input-letter">B</span><div><strong>Input B</strong><small>G1 · AND</small></div></div><button class="signal-toggle" data-input="B" type="button" role="switch" aria-checked="false" aria-label="Toggle input B"><span></span><b>0</b></button></div>
+                <div class="input-row"><div class="input-name"><span class="input-letter">C</span><div><strong>Input C</strong><small>G2 · OR</small></div></div><button class="signal-toggle" data-input="C" type="button" role="switch" aria-checked="true" aria-label="Toggle input C"><span></span><b>1</b></button></div>
+              </div>
+              <div class="panel-separator"></div>
+              <div class="panel-heading"><div><span class="panel-kicker">ADD COMPONENT</span><h3>Gate library</h3></div></div>
+              <div class="gate-library" aria-label="Add a logic gate">
+                <button type="button" data-add-gate="AND">AND</button><button type="button" data-add-gate="OR">OR</button>
+                <button type="button" data-add-gate="NOT">NOT</button><button type="button" data-add-gate="XOR">XOR</button>
+                <button type="button" data-add-gate="NAND">NAND</button><button type="button" data-add-gate="NOR">NOR</button>
+                <button type="button" data-add-gate="XNOR">XNOR</button>
+              </div>
+              <div class="selected-gate-panel" id="selected-gate-panel"></div>
+              <div class="panel-separator"></div>
+              <div class="output-heading"><span>FINAL OUTPUT</span><span class="output-source">G3 · NOT</span></div>
+              <div class="output-result"><span class="output-lamp" id="output-lamp"></span><strong id="output-result">0</strong><span id="output-state">LOW</span></div>
+              <p class="expression">¬((A ∧ B) ∨ C)</p>
+            </aside>
+          </div>
+
+          <div class="gate-results" aria-label="Gate evaluation results">
+            <div class="gate-result"><span class="result-index">01</span><div><strong>AND</strong><small>G1 · A ∧ B</small></div><span class="result-value" id="and-value">0</span></div>
+            <span class="result-arrow" aria-hidden="true">→</span>
+            <div class="gate-result"><span class="result-index">02</span><div><strong>OR</strong><small>G2 · G1 ∨ C</small></div><span class="result-value" id="or-value">1</span></div>
+            <span class="result-arrow" aria-hidden="true">→</span>
+            <div class="gate-result"><span class="result-index">03</span><div><strong>NOT</strong><small>G3 · ¬G2</small></div><span class="result-value" id="not-value">0</span></div>
+          </div>
+        </section>
+
+        <section class="truth-view is-hidden" id="truth-view" aria-label="Circuit truth table">
+          <div class="section-toolbar">
+            <div class="section-title"><span class="live-dot"></span><div><h2>Truth table</h2><p>All 8 input combinations <span>·</span> 3-input circuit</p></div></div>
+            <span class="table-note">Current inputs are highlighted</span>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead id="truth-table-head"><tr><th>A</th><th>B</th><th>C</th></tr></thead>
+              <tbody id="truth-table-body"></tbody>
+            </table>
+          </div>
+          <div class="table-footnote"><span class="live-dot"></span> The highlighted row matches the current input signals.</div>
+        </section>
+
+        <section class="task3-view is-hidden" id="task3-view" aria-label="Task 3 course outcome demonstrations">
+          <div class="section-toolbar task3-header">
+            <div class="section-title"><span class="live-dot"></span><div><h2>Task 3 demonstrations</h2><p>CO3 integration across LogicCraft modules <span>·</span> Computer Graphics CO6</p></div></div>
+            <span class="table-note">Interactive course outcome demos</span>
+          </div>
+          <nav class="task-module-tabs" aria-label="Task 3 subject modules">
+            <button class="task-module-tab is-active" data-module="cpp" type="button">C++ <span>CO3</span></button>
+            <button class="task-module-tab" data-module="java" type="button">Java / OOP <span>CO3</span></button>
+            <button class="task-module-tab" data-module="graphics" type="button">Graphics <span>CO6</span></button>
+            <button class="task-module-tab" data-module="coa" type="button">COA / ALP <span>CO3</span></button>
+          </nav>
+
+          <section class="task-module-panel" data-panel="cpp">
+            <div class="task-module-heading"><div><span class="module-eyebrow">PROGRAMMING LAB · PROCEDURAL C++</span><h2>Undo stack &amp; simulation queue</h2><p>LIFO history reverses circuit edits. FIFO events process gate signals in arrival order.</p></div><span class="module-badge">CO3</span></div>
+            <div class="task-metrics">
+              <article class="task-metric"><span>UNDO STACK</span><strong id="undo-depth">0 <small>/ 32</small></strong><p>Last action is undone first</p></article>
+              <article class="task-metric"><span>FIFO EVENT QUEUE</span><strong id="queue-count">0 <small>events</small></strong><p>Gate evaluation order</p></article>
+              <article class="task-metric"><span>LAST OPERATION</span><strong id="last-cpp-action">Ready</strong><p id="last-cpp-action-detail">Edit a gate or input in Circuit.</p></article>
+            </div>
+            <div class="task-columns">
+              <article class="task-card"><div class="task-card-heading"><div><h3>Undo history</h3><p>Stored circuit actions · max capacity 32</p></div><button class="button button-quiet" id="undo-demo-button" type="button" disabled>Undo last</button></div><ol class="history-list" id="undo-history"></ol></article>
+              <article class="task-card"><div class="task-card-heading"><div><h3>Simulation event queue</h3><p>Gate output events, processed FIFO</p></div><span class="queue-tag">FIFO</span></div><ol class="event-list" id="event-queue"></ol></article>
+            </div>
+          </section>
+
+          <section class="task-module-panel is-hidden" data-panel="java">
+            <div class="task-module-heading"><div><span class="module-eyebrow">PROBLEM SOLVING USING OOP · JAVA</span><h2>Exceptions &amp; generic collections</h2><p>Check gate-factory constraints and manage components in a typed collection.</p></div><span class="module-badge">CO3</span></div>
+            <div class="task-columns java-demo-columns">
+              <article class="task-card"><div class="task-card-heading"><div><h3>GateFactory validation</h3><p>Invalid requests return InvalidInputException.</p></div></div>
+                <form class="demo-form" id="java-validation-form">
+                  <label>Gate type<select id="java-gate-type"><option>AND</option><option>OR</option><option>NOT</option><option>XOR</option><option>NAND</option><option>NOR</option><option>XNOR</option></select></label>
+                  <label>Input count<input id="java-input-count" type="number" min="0" max="8" value="2" required></label>
+                  <button class="button button-primary" type="submit">Validate gate</button>
+                </form>
+                <div class="demo-result" id="java-validation-result" role="status">Ready to validate a gate request.</div>
+              </article>
+              <article class="task-card"><div class="task-card-heading"><div><h3>ComponentList&lt;LogicGate&gt;</h3><p>Generic component registry · max 32</p></div><span class="collection-count" id="java-component-count">0 / 32</span></div>
+                <div class="collection-controls"><select id="java-component-type" aria-label="Gate type to add"><option>AND</option><option>OR</option><option>NOT</option><option>XOR</option><option>NAND</option><option>NOR</option><option>XNOR</option></select><button class="button button-primary" id="java-add-component" type="button">Add component</button><button class="button button-quiet" id="java-clear-components" type="button">Clear</button></div>
+                <ul class="component-list" id="java-component-list"></ul>
+              </article>
+            </div>
+            <article class="package-strip"><span>PACKAGE ARCHITECTURE</span><code>logiccraft.gates</code><code>logiccraft.circuit</code><code>logiccraft.collections</code><code>logiccraft.exceptions</code><code>logiccraft.file</code></article>
+          </section>
+
+          <section class="task-module-panel is-hidden" data-panel="graphics">
+            <div class="task-module-heading"><div><span class="module-eyebrow">COMPUTER GRAPHICS · OPENGL RENDERER</span><h2>Textures &amp; lighting</h2><p>Preview the procedural board themes and signal illumination in the circuit canvas.</p></div><span class="module-badge">CO6</span></div>
+            <div class="task-columns graphics-demo-columns">
+              <article class="task-card graphics-controls"><div class="task-card-heading"><div><h3>Renderer controls</h3><p>Matches the OpenGL renderer’s theme toggles.</p></div></div>
+                <label class="theme-control">Board substrate<select id="graphics-theme"><option value="pcb">PCB · copper traces</option><option value="silicon">Silicon · chip surface</option><option value="carbon">Carbon · dark substrate</option></select></label>
+                <label class="feature-toggle"><span><strong>Texture mapping</strong><small>Procedural substrate pattern · [T]</small></span><input id="graphics-textures" type="checkbox" checked></label>
+                <label class="feature-toggle"><span><strong>Lighting &amp; signal glow</strong><small>Material highlights · [L]</small></span><input id="graphics-lighting" type="checkbox" checked></label>
+                <button class="button button-primary" id="graphics-apply" type="button">Apply renderer settings</button>
+              </article>
+              <article class="task-card graphics-preview-card"><div class="task-card-heading"><div><h3>Canvas preview</h3><p>Board material and signal lighting preview.</p></div><span class="renderer-state" id="graphics-state">TEXTURED · LIT</span></div>
+                <div class="graphics-preview" id="graphics-preview" data-theme="pcb"><div class="preview-trace trace-one"></div><div class="preview-trace trace-two"></div><div class="preview-chip"><span>LOGIC</span><strong>G1</strong><i></i></div><div class="preview-led"></div><span class="preview-caption">LOGICCRAFT · SUBSTRATE PREVIEW</span></div>
+              </article>
+            </div>
+          </section>
+
+          <section class="task-module-panel is-hidden" data-panel="coa">
+            <div class="task-module-heading"><div><span class="module-eyebrow">COMPUTER ORGANIZATION &amp; ARCHITECTURE · x86-64 ALP</span><h2>Arithmetic &amp; ASCII processing</h2><p>Explore the CO3 assembly routines with the same boundary behavior as the project demos.</p></div><span class="module-badge">CO3</span></div>
+            <div class="task-columns coa-demo-columns">
+              <article class="task-card"><div class="task-card-heading"><div><h3>Assembly routine</h3><p>Successive addition, opcode decode, command validation, expression evaluation.</p></div></div>
+                <form class="demo-form coa-form" id="coa-form">
+                  <label>Operation<select id="coa-action"><option value="multiply">Multiply · repeated addition</option><option value="truth-rows">Truth-table rows · 2ⁿ</option><option value="parse-gate">Parse gate name · opcode</option><option value="validate-command">Validate command</option><option value="evaluate-expression">Evaluate Boolean string</option></select></label>
+                  <div class="coa-arguments" id="coa-arguments"></div>
+                  <button class="button button-primary" type="submit">Run assembly demo</button>
+                </form>
+                <div class="demo-result coa-result" id="coa-result" role="status">Select an operation to begin.</div>
+              </article>
+              <article class="task-card coa-reference"><div class="task-card-heading"><div><h3>Routine reference</h3><p>COA/ALP source routines represented by this demo.</p></div></div>
+                <div class="routine-list"><div><code>asm_mul_successive_addition_64</code><span>Repeated add</span></div><div><code>asm_compute_truth_table_rows_64</code><span>Repeated double</span></div><div><code>asm_parse_gate_type_64</code><span>ASCII → opcode</span></div><div><code>asm_validate_command_64</code><span>ASCII → command ID</span></div><div><code>asm_eval_boolean_expr_str_64</code><span>ASCII → result</span></div></div>
+              </article>
+            </div>
+          </section>
+        </section>
+
+        <div class="app-message is-hidden" id="app-message" role="status"></div>
+        <footer class="page-footer"><span>LogicCraft · C++ · Graphics · Java · COA / ALP</span><span id="backend-url">Local backend · 127.0.0.1:3000</span></footer>
+      </main>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,2069 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LogicCraft — Digital Logic Workbench</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="app-body">
+    <!-- Main App Layout: Sidebar + Main Area -->
+    <section id="authScreen" class="auth-screen" aria-label="LogicCraft sign in">
+        <div class="auth-card">
+            <div class="auth-mark">LC</div>
+            <div class="auth-kicker">DIGITAL LOGIC WORKBENCH</div>
+            <h1 id="authHeading">Welcome back</h1>
+            <p id="authSubheading">Sign in to open your LogicCraft workspace.</p>
+            <form id="authForm" class="auth-form">
+                <label for="authUsername">Username</label><input id="authUsername" autocomplete="username" required maxlength="40" placeholder="Your username">
+                <label for="authPassword">Password</label><input id="authPassword" type="password" autocomplete="current-password" required minlength="6" placeholder="Your password">
+                <div id="authRoleField" class="auth-role-field" hidden><label for="authRole">Role</label><input id="authRole" maxlength="50" value="Circuit Designer" placeholder="Your role"></div>
+                <button id="authSubmit" type="submit">Sign in</button>
+            </form>
+            <p id="authMessage" class="auth-message" role="status"></p>
+            <button id="authToggle" class="auth-toggle" type="button">Create an account</button>
+            <p class="auth-hint">Demo account: <code>engineer</code> / <code>engineer123</code></p>
+        </div>
+    </section>
+    <div class="app-shell" id="logiccraftApp" style="display:none">
+        <!-- LEFT DARK SIDEBAR -->
+        <aside class="app-sidebar">
+            <div class="sidebar-brand">
+                <div class="brand-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 6h4a6 6 0 0 1 6 6 6 6 0 0 1-6 6H4V6z"></path>
+                        <circle cx="18" cy="12" r="2"></circle>
+                        <line x1="20" y1="12" x2="22" y2="12"></line>
+                    </svg>
+                </div>
+                <div class="brand-text">
+                    <h1 class="brand-title">LogicCraft</h1>
+                    <span class="brand-subtitle">Digital logic workbench</span>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section-title">WORKSPACE</div>
+                <button class="nav-item active" data-screen="screen-overview">
+                    <span class="nav-icon">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+                            <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+                            <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
+                            <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+                        </svg>
+                    </span>
+                    <span class="nav-label">Overview</span>
+                </button>
+                <button class="nav-item" data-screen="screen-designer">
+                    <span class="nav-icon">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="6" cy="6" r="3"></circle>
+                            <circle cx="6" cy="18" r="3"></circle>
+                            <circle cx="18" cy="12" r="3"></circle>
+                            <line x1="9" y1="6" x2="15" y2="10"></line>
+                            <line x1="9" y1="18" x2="15" y2="14"></line>
+                        </svg>
+                    </span>
+                    <span class="nav-label">Circuit Designer</span>
+                </button>
+                <button class="nav-item" data-screen="screen-simulation">
+                    <span class="nav-icon">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                        </svg>
+                    </span>
+                    <span class="nav-label">Simulation</span>
+                </button>
+                <button class="nav-item" data-screen="screen-truthtable">
+                    <span class="nav-icon">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+                            <line x1="3" y1="9" x2="21" y2="9"></line>
+                            <line x1="3" y1="15" x2="21" y2="15"></line>
+                            <line x1="9" y1="3" x2="9" y2="21"></line>
+                            <line x1="15" y1="3" x2="15" y2="21"></line>
+                        </svg>
+                    </span>
+                    <span class="nav-label">Truth Table</span>
+                </button>
+                <button class="nav-item" data-screen="screen-projects">
+                    <span class="nav-icon">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                    </span>
+                    <span class="nav-label">My Projects</span>
+                </button>
+
+                <div class="nav-section-title">ENGINEERING TOOLS</div>
+                <button class="nav-item" data-screen="screen-analysis">
+                    <span class="nav-icon">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="20" x2="18" y2="10"></line>
+                            <line x1="12" y1="20" x2="12" y2="4"></line>
+                            <line x1="6" y1="20" x2="6" y2="14"></line>
+                        </svg>
+                    </span>
+                    <span class="nav-label">Component Analysis</span>
+                </button>
+                <button class="nav-item" data-screen="screen-processor">
+                    <span class="nav-icon">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                            <rect x="9" y="9" width="6" height="6"></rect>
+                            <line x1="9" y1="1" x2="9" y2="4"></line>
+                            <line x1="15" y1="1" x2="15" y2="4"></line>
+                            <line x1="9" y1="20" x2="9" y2="23"></line>
+                            <line x1="15" y1="20" x2="15" y2="23"></line>
+                            <line x1="20" y1="9" x2="23" y2="9"></line>
+                            <line x1="20" y1="14" x2="23" y2="14"></line>
+                            <line x1="1" y1="9" x2="4" y2="9"></line>
+                            <line x1="1" y1="14" x2="4" y2="14"></line>
+                        </svg>
+                    </span>
+                    <span class="nav-label">Processor Lab</span>
+                </button>
+                <button class="nav-item" data-screen="screen-graphics">
+                    <span class="nav-icon">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                            <polyline points="2 17 12 22 22 17"></polyline>
+                            <polyline points="2 12 12 17 22 12"></polyline>
+                        </svg>
+                    </span>
+                    <span class="nav-label">Graphics Lab</span>
+                </button>
+                <button class="nav-item" data-screen="screen-components">
+                    <span class="nav-icon">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                        </svg>
+                    </span>
+                    <span class="nav-label">Component Library</span>
+                </button>
+
+                <!-- Technical Reports and Test & Verification screens remain available via other app actions, not sidebar navigation. -->
+            </nav>
+
+            <div class="sidebar-footer">
+                <button class="nav-item footer-settings" data-screen="screen-settings">
+                    <span class="nav-icon">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                        </svg>
+                    </span>
+                    <span class="nav-label">Settings</span>
+                </button>
+
+                <button class="nav-item auth-logout" id="btnLogout" type="button"><span class="nav-label">Sign out</span></button>
+                <div class="sidebar-status-card">
+                    <div class="status-dot"></div>
+                    <div class="status-info">
+                        <span class="status-head">Workspace ready</span>
+                        <span class="status-sub" id="backendStatus">Simulation engine online</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT CONTAINER -->
+        <div class="app-main-viewport">
+            <!-- TOP NAVBAR -->
+            <header class="app-topbar">
+                <div class="topbar-project-section">
+                    <div class="project-meta-label">CURRENT PROJECT</div>
+                    <div class="project-picker-wrapper">
+                        <select id="projectSelect" class="clean-project-select"></select>
+                    </div>
+                </div>
+
+                <div class="topbar-actions-section">
+                    <div class="save-status-indicator">
+                        <span class="indicator-dot"></span>
+                        <span class="indicator-text" id="saveStatusText">All changes saved</span>
+                    </div>
+
+                    <button id="btnNewProject" class="btn-topbar-secondary">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        New Project
+                    </button>
+
+                    <button id="btnSaveProject" class="btn-topbar-secondary">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                            <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                            <polyline points="7 3 7 8 15 8"></polyline>
+                        </svg>
+                        Save
+                    </button>
+
+                    <button id="btnRunSimulation" class="btn-topbar-primary">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                        </svg>
+                        Run Simulation
+                    </button>
+
+                    <div class="export-dropdown-wrapper">
+                        <button id="btnTopbarExportReport" class="btn-topbar-secondary" title="Export Circuit Engineering Report (PDF & CSV)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            Export Report
+                        </button>
+                        <div id="topbarExportDropdown" class="export-dropdown-menu">
+                            <button id="btnTopExportPDF" class="dropdown-item">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="12" y2="18"></line><line x1="15" y1="15" x2="12" y2="18"></line></svg>
+                                Export as PDF Report
+                            </button>
+                            <button id="btnTopExportCSV" class="dropdown-item">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                                Export as CSV Data
+                            </button>
+                            <button id="btnTopPrintReport" class="dropdown-item">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                                View / Print Report
+                            </button>
+                        </div>
+                    </div>
+
+                    <button id="btnUndoAction" class="btn-topbar-icon" title="Undo Last Change (LIFO Stack)">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 7v6h6"></path>
+                            <path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"></path>
+                        </svg>
+                    </button>
+
+                    <div class="topbar-user-badge">
+                        <div class="user-avatar">LC</div>
+                        <div class="user-details">
+                            <span class="user-name">Local user</span>
+                            <span class="user-role">Engineering workspace</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- SCROLLABLE SCREEN STACK -->
+            <main class="screens-container">
+
+                <!-- ========================================================= -->
+                <!-- SCREEN 1: OVERVIEW DASHBOARD (FIGMA DESIGN REPLICA)       -->
+                <!-- ========================================================= -->
+                <section id="screen-overview" class="app-screen active">
+                    <div class="overview-header-group">
+                        <div class="screen-kicker">ENGINEERING WORKSPACE</div>
+                        <div class="screen-header-row">
+                            <div>
+                                <h2 class="screen-title">LogicCraft Workspace</h2>
+                                <p class="screen-description">Design, simulate, and inspect digital logic circuits from one focused workbench.</p>
+                            </div>
+                            <button id="btnCtaCreateCircuit" class="btn-primary-lg">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                </svg>
+                                Create New Circuit
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Metrics / KPI Card Row -->
+                    <div class="metrics-card-strip">
+                        <div class="metric-col">
+                            <div class="metric-text-group">
+                                <span class="metric-title">Components</span>
+                                <span class="metric-caption">in active circuit</span>
+                            </div>
+                            <span class="metric-digit" id="overviewGateCount">3</span>
+                        </div>
+                        <div class="metric-divider"></div>
+                        <div class="metric-col">
+                            <div class="metric-text-group">
+                                <span class="metric-title">Connections</span>
+                                <span class="metric-caption">signal paths</span>
+                            </div>
+                            <span class="metric-digit" id="overviewWireCount">2</span>
+                        </div>
+                        <div class="metric-divider"></div>
+                        <div class="metric-col">
+                            <div class="metric-text-group">
+                                <span class="metric-title">Saved circuits</span>
+                                <span class="metric-caption">available projects</span>
+                            </div>
+                            <span class="metric-digit" id="overviewProjectCount">1</span>
+                        </div>
+                        <div class="metric-divider"></div>
+                        <div class="metric-col">
+                            <div class="metric-text-group">
+                                <span class="metric-title">Engine status</span>
+                                <span class="metric-caption">simulation online</span>
+                            </div>
+                            <span class="metric-status-ready">Ready</span>
+                        </div>
+                    </div>
+
+                    <!-- Two-Column Grid: Row 1 -->
+                    <div class="overview-grid-row">
+                        <!-- Recent Work / Projects Card -->
+                        <div class="card-white flex-1">
+                            <div class="card-top-header">
+                                <div>
+                                    <span class="card-kicker">RECENT WORK</span>
+                                    <h3 class="card-heading">Projects</h3>
+                                </div>
+                                <button id="btnViewAllProjects" class="link-btn">View all</button>
+                            </div>
+                            <div class="recent-project-item" id="recentProjectItem">
+                                <div class="project-icon-box">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#226b38" stroke-width="2">
+                                        <circle cx="6" cy="6" r="3"></circle>
+                                        <circle cx="6" cy="18" r="3"></circle>
+                                        <circle cx="18" cy="12" r="3"></circle>
+                                        <line x1="9" y1="6" x2="15" y2="10"></line>
+                                        <line x1="9" y1="18" x2="15" y2="14"></line>
+                                    </svg>
+                                </div>
+                                <div class="recent-project-meta">
+                                    <span class="recent-project-name" id="recentProjectName">LogicCraft Reference Circuit</span>
+                                    <span class="recent-project-stats" id="recentProjectStats">3 components · 2 connections</span>
+                                </div>
+                                <span class="recent-project-badge">Active now</span>
+                            </div>
+                        </div>
+
+                        <!-- Quick Access / Continue Building Card -->
+                        <div class="card-white flex-1">
+                            <div class="card-top-header">
+                                <div>
+                                    <span class="card-kicker">QUICK ACCESS</span>
+                                    <h3 class="card-heading">Continue building</h3>
+                                </div>
+                            </div>
+                            <div class="quick-access-list">
+                                <div class="quick-access-card" id="qaOpenDesigner">
+                                    <div class="qa-icon-circle green">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#226b38" stroke-width="2">
+                                            <circle cx="6" cy="6" r="3"></circle>
+                                            <circle cx="6" cy="18" r="3"></circle>
+                                            <circle cx="18" cy="12" r="3"></circle>
+                                            <line x1="9" y1="6" x2="15" y2="10"></line>
+                                            <line x1="9" y1="18" x2="15" y2="14"></line>
+                                        </svg>
+                                    </div>
+                                    <div class="qa-details">
+                                        <span class="qa-title">Open Circuit Designer</span>
+                                        <span class="qa-sub">Edit gates, pins, and signal paths</span>
+                                    </div>
+                                    <span class="qa-arrow">→</span>
+                                </div>
+
+                                <div class="quick-access-card" id="qaRunSimulation">
+                                    <div class="qa-icon-circle amber">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#b45309">
+                                            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                        </svg>
+                                    </div>
+                                    <div class="qa-details">
+                                        <span class="qa-title">Run a Simulation</span>
+                                        <span class="qa-sub">Inspect signals and truth table output</span>
+                                    </div>
+                                    <span class="qa-arrow">→</span>
+                                </div>
+
+                                <div class="quick-access-card" id="qaExportReport">
+                                    <div class="qa-icon-circle blue">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1d4ed8" stroke-width="2">
+                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                            <polyline points="14 2 14 8 20 8"></polyline>
+                                            <line x1="12" y1="18" x2="12" y2="12"></line>
+                                            <line x1="9" y1="15" x2="12" y2="18"></line>
+                                            <line x1="15" y1="15" x2="12" y2="18"></line>
+                                        </svg>
+                                    </div>
+                                    <div class="qa-details">
+                                        <span class="qa-title">Export Circuit Report</span>
+                                        <span class="qa-sub">Generate PDF &amp; CSV reports with live schematic &amp; 2ᴺ truth table</span>
+                                    </div>
+                                    <span class="qa-arrow">→</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Two-Column Grid: Row 2 -->
+                    <div class="overview-grid-row">
+                        <!-- Recent Activity Log Card -->
+                        <div class="card-white flex-1">
+                            <div class="card-top-header">
+                                <div>
+                                    <span class="card-kicker">WORKSPACE LOG</span>
+                                    <h3 class="card-heading">Recent activity</h3>
+                                </div>
+                            </div>
+                            <div class="activity-timeline" id="activityTimeline">
+                                <div class="activity-entry">
+                                    <div class="activity-bullet green"></div>
+                                    <div class="activity-body">
+                                        <div class="activity-row">
+                                            <span class="activity-title">Reference circuit loaded</span>
+                                            <span class="activity-time">Now</span>
+                                        </div>
+                                        <p class="activity-desc">Project state synchronized with the simulation engine</p>
+                                    </div>
+                                </div>
+                                <div class="activity-entry">
+                                    <div class="activity-bullet amber"></div>
+                                    <div class="activity-body">
+                                        <div class="activity-row">
+                                            <span class="activity-title">Truth table generated</span>
+                                            <span class="activity-time">Session</span>
+                                        </div>
+                                        <p class="activity-desc">All input combinations evaluated</p>
+                                    </div>
+                                </div>
+                                <div class="activity-entry">
+                                    <div class="activity-bullet gray"></div>
+                                    <div class="activity-body">
+                                        <div class="activity-row">
+                                            <span class="activity-title">Topology ready</span>
+                                            <span class="activity-time">Session</span>
+                                        </div>
+                                        <p class="activity-desc">Three-stage AND–OR–NOT network</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Active Design Preview Card -->
+                        <div class="card-white flex-1">
+                            <div class="card-top-header">
+                                <div>
+                                    <span class="card-kicker">ACTIVE DESIGN</span>
+                                    <h3 class="card-heading" id="previewCircuitTitle">Reference Circuit</h3>
+                                </div>
+                                <span class="pill-badge-green">SIMULATION READY</span>
+                            </div>
+                            <div class="schematic-preview-box">
+                                <svg id="overviewSchematicSvg" viewBox="0 0 460 140" class="schematic-svg">
+                                    <!-- Schematic wires -->
+                                    <line x1="20" y1="45" x2="65" y2="45" stroke="#4a5568" stroke-width="2"></line>
+                                    <line x1="20" y1="85" x2="65" y2="85" stroke="#4a5568" stroke-width="2"></line>
+                                    <text x="8" y="49" fill="#718096" font-family="Inter, sans-serif" font-size="11" font-weight="600">A</text>
+                                    <text x="8" y="89" fill="#718096" font-family="Inter, sans-serif" font-size="11" font-weight="600">B</text>
+
+                                    <!-- AND Gate G1 -->
+                                    <path d="M 65 30 L 95 30 A 25 25 0 0 1 95 100 L 65 100 Z" fill="none" stroke="#2d3748" stroke-width="2.5"></path>
+                                    <line x1="120" y1="65" x2="175" y2="65" stroke="#4a5568" stroke-width="2"></line>
+
+                                    <!-- OR Gate G2 -->
+                                    <line x1="20" y1="110" x2="185" y2="110" stroke="#4a5568" stroke-width="2"></line>
+                                    <path d="M 175 45 Q 210 50 240 85 Q 210 120 175 125 Q 190 85 175 45 Z" fill="none" stroke="#226b38" stroke-width="2.5"></path>
+                                    <line x1="240" y1="85" x2="295" y2="85" stroke="#4a5568" stroke-width="2"></line>
+
+                                    <!-- NOT Inverter G3 -->
+                                    <polygon points="295,65 345,85 295,105" fill="none" stroke="#2d3748" stroke-width="2.5"></polygon>
+                                    <circle cx="350" cy="85" r="5" fill="none" stroke="#2d3748" stroke-width="2"></circle>
+                                    <line x1="355" y1="85" x2="410" y2="85" stroke="#4a5568" stroke-width="2"></line>
+
+                                    <text x="418" y="73" fill="#718096" font-family="Inter, sans-serif" font-size="10" font-weight="600">OUT</text>
+                                    <text x="422" y="91" fill="#1a202c" font-family="'JetBrains Mono', monospace" font-size="15" font-weight="700" id="previewOutVal">0</text>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Overview Grid Row 3: Dedicated Documentation & Resources Section -->
+                    <div class="overview-section-header">
+                        <span class="card-kicker">ENGINEERING ASSETS &amp; DIRECTORIES</span>
+                        <h3 class="overview-section-title">Documentation &amp; Resources</h3>
+                    </div>
+
+                    <div class="overview-grid-row">
+                        <!-- Master Project Technical Report Card -->
+                        <div class="card-white flex-1 doc-resource-card">
+                            <div class="card-top-header">
+                                <div>
+                                    <span class="card-kicker">TECHNICAL REPORT</span>
+                                    <h3 class="card-heading">Master Project Technical Report</h3>
+                                </div>
+                                <span class="pill-badge-green">PDF SPECIFICATION</span>
+                            </div>
+                            <p class="card-subtext">Comprehensive engineering analysis documenting digital logic architecture, register-level AMD64 hardware arithmetic, procedural LIFO state rollback, and OpenGL rasterization verification.</p>
+                            <div class="doc-actions-row">
+                                <a href="/docs/LogicCraft_Task4_Report.pdf" target="_blank" rel="noopener noreferrer" class="btn-topbar-secondary">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                    View PDF
+                                </a>
+                                <a href="/docs/LogicCraft_Task4_Report.pdf?download=1" download="LogicCraft_Task4_Report.pdf" class="btn-topbar-primary">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                        <polyline points="7 10 12 15 17 10"></polyline>
+                                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                                    </svg>
+                                    Download PDF
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Dynamic Circuit Engineering Report Card -->
+                        <div class="card-white flex-1 doc-resource-card">
+                            <div class="card-top-header">
+                                <div>
+                                    <span class="card-kicker">CIRCUIT EXPORT</span>
+                                    <h3 class="card-heading">Export Circuit Report</h3>
+                                </div>
+                                <span class="pill-badge-blue">LIVE METRICS</span>
+                            </div>
+                            <p class="card-subtext">Export a publication-grade engineering report with circuit diagram, gate-wise breakdown, complete combinatorial truth table, simulation delays, and topology validation diagnostics.</p>
+                            <div class="doc-actions-row">
+                                <button id="btnOverviewExportPDF" class="btn-topbar-primary">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                        <polyline points="14 2 14 8 20 8"></polyline>
+                                        <line x1="12" y1="18" x2="12" y2="12"></line>
+                                        <line x1="9" y1="15" x2="12" y2="18"></line>
+                                        <line x1="15" y1="15" x2="12" y2="18"></line>
+                                    </svg>
+                                    Export PDF
+                                </button>
+                                <button id="btnOverviewExportCSV" class="btn-topbar-secondary">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                        <polyline points="7 10 12 15 17 10"></polyline>
+                                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                                    </svg>
+                                    Export CSV
+                                </button>
+                                <button id="btnOverviewPrintReport" class="btn-topbar-secondary">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                                        <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                                        <rect x="6" y="14" width="12" height="8"></rect>
+                                    </svg>
+                                    View / Print
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ========================================================= -->
+                <!-- SCREEN 2: CIRCUIT DESIGNER (DARK WORKSPACE STUDIO)        -->
+                <!-- ========================================================= -->
+                <section id="screen-designer" class="app-screen">
+                    <div class="designer-studio">
+                        <!-- Left Palette Panel inside Designer -->
+                        <aside class="designer-palette" id="designerPalette">
+                            <div class="palette-header" style="display:flex; justify-content:space-between; align-items:flex-start;">
+                                <div>
+                                    <h3 class="palette-title">Gate Palette</h3>
+                                    <span class="palette-hint">Click component to insert</span>
+                                </div>
+                                <button id="btnTogglePalette" class="btn-canvas-tool" title="Collapse Gate Palette" style="padding:4px 6px; margin-top:-2px;">
+                                    <svg id="paletteToggleIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="15 18 9 12 15 6"></polyline>
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <div class="palette-gate-grid">
+                                <button class="palette-item" data-type="AND" title="Add 2-Input AND Gate">
+                                    <span class="gate-icon">⩓</span>
+                                    <span class="gate-label">AND</span>
+                                </button>
+                                <button class="palette-item" data-type="OR" title="Add 2-Input OR Gate">
+                                    <span class="gate-icon">⩔</span>
+                                    <span class="gate-label">OR</span>
+                                </button>
+                                <button class="palette-item" data-type="NOT" title="Add Inverter (NOT) Gate">
+                                    <span class="gate-icon">¬</span>
+                                    <span class="gate-label">NOT</span>
+                                </button>
+                                <button class="palette-item" data-type="NAND" title="Add 2-Input NAND Gate">
+                                    <span class="gate-icon">⊼</span>
+                                    <span class="gate-label">NAND</span>
+                                </button>
+                                <button class="palette-item" data-type="NOR" title="Add 2-Input NOR Gate">
+                                    <span class="gate-icon">⊽</span>
+                                    <span class="gate-label">NOR</span>
+                                </button>
+                                <button class="palette-item" data-type="XOR" title="Add 2-Input XOR Gate">
+                                    <span class="gate-icon">⊻</span>
+                                    <span class="gate-label">XOR</span>
+                                </button>
+                                <button class="palette-item" data-type="XNOR" title="Add 2-Input XNOR Gate">
+                                    <span class="gate-icon">⊙</span>
+                                    <span class="gate-label">XNOR</span>
+                                </button>
+                            </div>
+
+                            <div class="designer-sidebar-section">
+                                <h4 class="section-title">Wiring Mode</h4>
+                                <p class="section-instruction">Click an <strong>output pin</strong> (circle on right) then click an <strong>input pin</strong> (on left) to route connection.</p>
+                                <div class="connection-status-pill" id="wireStatus">Ready to wire</div>
+                            </div>
+
+                            <div class="designer-sidebar-section">
+                                <h4 class="section-title">Selected Component</h4>
+                                <div id="selectedGateDetails" class="gate-details-empty">
+                                    Click a gate on the canvas to inspect and configure pins.
+                                </div>
+                            </div>
+
+                            <div class="designer-sidebar-section actions-row">
+                                <button id="btnClearCanvas" class="btn-dark-outline btn-block">Clear Canvas</button>
+                                <button id="btnResetDefault" class="btn-dark-secondary btn-block">Load Reference Circuit</button>
+                            </div>
+                        </aside>
+
+                        <!-- Central Canvas Area -->
+                        <div class="designer-canvas-area">
+                            <div class="canvas-top-bar">
+                                <div class="canvas-tool-group">
+                                    <button id="btnExpandPalette" class="btn-canvas-tool" title="Expand Gate Palette" style="display:none; align-items:center; gap:4px; border-color:var(--accent-cyan); color:var(--accent-cyan);">
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="9 18 15 12 9 6"></polyline>
+                                        </svg>
+                                        <span>Palette</span>
+                                    </button>
+                                    <button id="btnZoomIn" class="btn-canvas-tool" title="Zoom In">+</button>
+                                    <button id="btnZoomOut" class="btn-canvas-tool" title="Zoom Out">−</button>
+                                    <button id="btnResetView" class="btn-canvas-tool" title="Reset View">1:1</button>
+                                    <span class="zoom-indicator" id="zoomDisplay">100%</span>
+                                </div>
+
+                                <div class="canvas-tool-group">
+                                    <label class="canvas-toggle">
+                                        <input type="checkbox" id="chkGrid" checked>
+                                        <span>Grid</span>
+                                    </label>
+                                    <label class="canvas-toggle">
+                                        <input type="checkbox" id="chkPCBSubstrate" checked>
+                                        <span>PCB Substrate</span>
+                                    </label>
+                                    <label class="canvas-toggle">
+                                        <input type="checkbox" id="chkSignalGlow" checked>
+                                        <span>Signal Glow</span>
+                                    </label>
+                                </div>
+
+                                <div class="canvas-tool-group">
+                                    <button id="btnRotateGate" class="btn-canvas-tool" title="Rotate Selected Component 90° (2D Rotation)" style="display:inline-flex; align-items:center; gap:4px;">
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+                                        <span>Rotate 90°</span>
+                                    </button>
+                                    <button id="btnFlipH" class="btn-canvas-tool" title="Horizontally Reflect Component (Flip H)">
+                                        <span>Flip H</span>
+                                    </button>
+                                    <button id="btnFlipV" class="btn-canvas-tool" title="Vertically Reflect Component (Flip V)">
+                                        <span>Flip V</span>
+                                    </button>
+                                    <button id="btnToggle3D" class="btn-canvas-tool" title="Toggle 3D IC Package Isometric Mode">
+                                        <span>3D View</span>
+                                    </button>
+                                    <button id="btnRotate3DX" class="btn-canvas-tool" title="Rotate selected blocks around X axis by 15°" style="display:none;">X ↻</button>
+                                    <button id="btnRotate3DY" class="btn-canvas-tool" title="Rotate selected blocks around Y axis by 15°" style="display:none;">Y ↻</button>
+                                    <button id="btnRotate3DZ" class="btn-canvas-tool" title="Rotate selected blocks around Z axis by 15°" style="display:none;">Z ↻</button>
+                                    <button id="btnRotate3DGroup" class="btn-canvas-tool" title="Rotate Selected Group/Block in 3D View" style="display:none; align-items:center; gap:4px; border-color:#38bdf8; color:#38bdf8;">
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+                                        <span>Rotate 3D</span>
+                                    </button>
+                                </div>
+
+                                <div class="canvas-tool-group">
+                                    <span class="canvas-circuit-stats" id="circuitStats">3 Gates | 2 Wires</span>
+                                </div>
+                            </div>
+
+                            <div class="canvas-viewport" id="canvasViewport">
+                                <canvas id="circuitCanvas" width="1200" height="750"></canvas>
+                            </div>
+
+                            <div class="canvas-footer-hints">
+                                <span>💡 <strong>Interactive Controls:</strong> Click an input terminal to toggle <strong>0/1</strong> in real time. Drag gates to position. Click output pin then input pin to wire. Press <strong>Undo</strong> to revert actions.</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ========================================================= -->
+                <!-- SCREEN 3: SIMULATION & SIGNALS                            -->
+                <!-- ========================================================= -->
+                <section id="screen-simulation" class="app-screen">
+                    <div class="screen-header-group">
+                        <div class="screen-kicker">CIRCUIT ENGINE</div>
+                        <h2 class="screen-title">Simulation &amp; Algebraic Reduction</h2>
+                        <p class="screen-description">Topological signal propagation, Boolean expression synthesis, and propagation delay analysis.</p>
+                    </div>
+
+                    <div class="overview-grid-row">
+                        <div class="card-white flex-1">
+                            <div class="card-top-header">
+                                <div>
+                                    <span class="card-kicker">CIRCUIT TOPOLOGY</span>
+                                    <h3 class="card-heading">Boolean Algebraic Expression</h3>
+                                </div>
+                                <span class="badge-neutral" id="exprComplexity">Evaluated via Circuit Topology</span>
+                            </div>
+                            <div class="expression-display-box" id="booleanExpressionBox">
+                                NOT((A AND B) OR C)
+                            </div>
+                            <div class="expression-metrics-strip">
+                                <div class="metric-block">
+                                    <span class="metric-caption">Propagation Delay:</span>
+                                    <span class="metric-bold" id="metricDelay">15 ns</span>
+                                </div>
+                                <div class="metric-block">
+                                    <span class="metric-caption">Logic Stages:</span>
+                                    <span class="metric-bold" id="metricStages">3</span>
+                                </div>
+                                <div class="metric-block">
+                                    <span class="metric-caption">Convergence State:</span>
+                                    <span class="metric-bold text-success">Converged</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-white flex-1">
+                            <div class="card-top-header">
+                                <div>
+                                    <span class="card-kicker">TERMINAL SIGNALS</span>
+                                    <h3 class="card-heading">Live Pin Signals</h3>
+                                </div>
+                            </div>
+                            <div class="signals-table-wrap" id="signalsTableContainer">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ========================================================= -->
+                <!-- SCREEN 4: TRUTH TABLE                                     -->
+                <!-- ========================================================= -->
+                <section id="screen-truthtable" class="app-screen">
+                    <div class="screen-header-group">
+                        <div class="screen-kicker">ANALYSIS ENGINE</div>
+                        <h2 class="screen-title">Circuit Truth Table</h2>
+                        <p class="screen-description">Exhaustive state space enumeration across all 2ᴺ input combinations.</p>
+                    </div>
+
+                    <div class="card-white">
+                        <div class="card-top-header">
+                            <div>
+                                <span class="card-kicker">COMBINATORIAL ENUMERATION</span>
+                                <h3 class="card-heading">Full State Table</h3>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <button id="btnTruthTableExportPDF" class="btn-topbar-secondary" style="padding: 4px 10px; font-size: 11px;" title="Export State Table as PDF">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                                    Export PDF
+                                </button>
+                                <button id="btnTruthTableExportCSV" class="btn-topbar-secondary" style="padding: 4px 10px; font-size: 11px;" title="Export State Table as CSV">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path></svg>
+                                    Export CSV
+                                </button>
+                                <span class="pill-badge-green" id="truthTableRowsCount">8 Rows Generated (2ᴺ)</span>
+                            </div>
+                        </div>
+                        <div class="truth-table-scroll-wrap" id="truthTableContainer">
+                            <table class="clean-table">
+                                <thead>
+                                    <tr>
+                                        <th>Row #</th>
+                                        <th>Input G1.A</th>
+                                        <th>Input G1.B</th>
+                                        <th>Input G2.B</th>
+                                        <th>Output G3</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td><strong>#1</strong></td><td><span class="signal-pill signal-low">0</span></td><td><span class="signal-pill signal-low">0</span></td><td><span class="signal-pill signal-low">0</span></td><td><span class="signal-pill signal-high">1</span></td></tr>
+                                    <tr><td><strong>#2</strong></td><td><span class="signal-pill signal-low">0</span></td><td><span class="signal-pill signal-low">0</span></td><td><span class="signal-pill signal-high">1</span></td><td><span class="signal-pill signal-low">0</span></td></tr>
+                                    <tr><td><strong>#3</strong></td><td><span class="signal-pill signal-low">0</span></td><td><span class="signal-pill signal-high">1</span></td><td><span class="signal-pill signal-low">0</span></td><td><span class="signal-pill signal-high">1</span></td></tr>
+                                    <tr><td><strong>#4</strong></td><td><span class="signal-pill signal-low">0</span></td><td><span class="signal-pill signal-high">1</span></td><td><span class="signal-pill signal-high">1</span></td><td><span class="signal-pill signal-low">0</span></td></tr>
+                                    <tr><td><strong>#5</strong></td><td><span class="signal-pill signal-high">1</span></td><td><span class="signal-pill signal-low">0</span></td><td><span class="signal-pill signal-low">0</span></td><td><span class="signal-pill signal-high">1</span></td></tr>
+                                    <tr><td><strong>#6</strong></td><td><span class="signal-pill signal-high">1</span></td><td><span class="signal-pill signal-low">0</span></td><td><span class="signal-pill signal-high">1</span></td><td><span class="signal-pill signal-low">0</span></td></tr>
+                                    <tr><td><strong>#7</strong></td><td><span class="signal-pill signal-high">1</span></td><td><span class="signal-pill signal-high">1</span></td><td><span class="signal-pill signal-low">0</span></td><td><span class="signal-pill signal-low">0</span></td></tr>
+                                    <tr><td><strong>#8</strong></td><td><span class="signal-pill signal-high">1</span></td><td><span class="signal-pill signal-high">1</span></td><td><span class="signal-pill signal-high">1</span></td><td><span class="signal-pill signal-low">0</span></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ========================================================= -->
+                <!-- SCREEN 5: COMPONENT ANALYSIS                              -->
+                <!-- ========================================================= -->
+                <section id="screen-analysis" class="app-screen">
+                    <div class="screen-header-group">
+                        <div class="screen-kicker">ENGINEERING TOOLS</div>
+                        <h2 class="screen-title">Component Analysis</h2>
+                        <p class="screen-description">Algorithmic analysis tools for component indexing, sorting pipelines, prime open-addressing hash verification, scalability benchmarking, and topology validation.</p>
+                    </div>
+
+                    <!-- Tab Navigation -->
+                    <div class="analysis-tabs-nav">
+                        <button class="analysis-tab-btn active" data-analysis-tab="tab-search">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                            Search
+                        </button>
+                        <button class="analysis-tab-btn" data-analysis-tab="tab-sort">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="18" y1="20" x2="18" y2="10"></line>
+                                <line x1="12" y1="20" x2="12" y2="4"></line>
+                                <line x1="6" y1="20" x2="6" y2="14"></line>
+                            </svg>
+                            Sorting
+                        </button>
+                        <button class="analysis-tab-btn" data-analysis-tab="tab-hashing">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="14" width="7" height="7"></rect>
+                                <rect x="3" y="14" width="7" height="7"></rect>
+                            </svg>
+                            Hashing
+                        </button>
+                        <button class="analysis-tab-btn" data-analysis-tab="tab-performance">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                            </svg>
+                            Performance
+                        </button>
+                        <button class="analysis-tab-btn" data-analysis-tab="tab-validation">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                            Topology Validation
+                        </button>
+                        <button class="analysis-tab-btn" data-analysis-tab="tab-all">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="8" y1="6" x2="21" y2="6"></line>
+                                <line x1="8" y1="12" x2="21" y2="12"></line>
+                                <line x1="8" y1="18" x2="21" y2="18"></line>
+                                <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                                <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                                <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                            </svg>
+                            View All
+                        </button>
+                    </div>
+
+                    <!-- TAB 1: SEARCH (Linear Search & Binary Search) -->
+                    <div id="tab-search" class="analysis-tab-pane active">
+                        <div class="overview-grid-row">
+                            <div class="card-white flex-1">
+                                <div class="card-top-header">
+                                    <div>
+                                        <span class="card-kicker">COMPONENT SEARCH</span>
+                                        <h3 class="card-heading">Component Search</h3>
+                                    </div>
+                                    <span class="badge-neutral">Linear Search &amp; Binary Search</span>
+                                </div>
+                                <p class="card-subtext">Query active circuit components using exact linear sequential lookup or logarithmic binary search on sorted indices.</p>
+                                <div class="form-grid-two">
+                                    <div class="form-field">
+                                        <label class="form-label">Algorithm</label>
+                                        <select id="searchAlgo" class="form-select">
+                                            <option value="linear">Linear Search O(N)</option>
+                                            <option value="binary" selected>Binary Search O(log N)</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-field">
+                                        <label class="form-label">Search Key</label>
+                                        <select id="searchKey" class="form-select">
+                                            <option value="id">Component ID</option>
+                                            <option value="name">Component Name</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-inline-search">
+                                    <input type="text" id="searchQuery" class="form-input" placeholder="e.g. G2" value="G2">
+                                    <button id="btnRunSearch" class="btn-topbar-primary">Search</button>
+                                </div>
+                                <div class="result-terminal-box" id="searchResultBox">
+                                    Ready to execute search.
+                                </div>
+                            </div>
+                            <div class="card-white flex-1">
+                                <div class="card-top-header">
+                                    <div>
+                                        <span class="card-kicker">SEARCH METRICS</span>
+                                        <h3 class="card-heading">Algorithm Specifications</h3>
+                                    </div>
+                                </div>
+                                <div class="spec-list-clean">
+                                    <div class="spec-item-row">
+                                        <span class="spec-item-name">Linear Search Complexity:</span>
+                                        <span class="spec-item-val font-mono">O(N) sequential scan</span>
+                                    </div>
+                                    <div class="spec-item-row">
+                                        <span class="spec-item-name">Binary Search Complexity:</span>
+                                        <span class="spec-item-val font-mono">O(log N) divide-and-conquer</span>
+                                    </div>
+                                    <div class="spec-item-row">
+                                        <span class="spec-item-name">Index Pre-condition:</span>
+                                        <span class="spec-item-val">Binary Search sorts the lookup keys before search</span>
+                                    </div>
+                                    <div class="spec-item-row">
+                                        <span class="spec-item-name">Dataset Scope:</span>
+                                        <span class="spec-item-val">Active schematic component registry</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 2: SORTING (Bubble Sort & Selection Sort) -->
+                    <div id="tab-sort" class="analysis-tab-pane">
+                        <div class="overview-grid-row">
+                            <div class="card-white flex-1">
+                                <div class="card-top-header">
+                                    <div>
+                                        <span class="card-kicker">COMPONENT SORTING</span>
+                                        <h3 class="card-heading">Component Sorting</h3>
+                                    </div>
+                                    <span class="badge-neutral">Efficient Sorting Algorithms</span>
+                                </div>
+                                <p class="card-subtext">Sort circuit components by ID, Name, or Gate Type. Merge Sort is selected by default for predictable O(N log N) performance; coursework comparison algorithms remain available.</p>
+                                <div class="form-grid-three">
+                                    <div class="form-field">
+                                        <label class="form-label">Algorithm</label>
+                                        <select id="sortAlgo" class="form-select">
+                                            <option value="bubble">Bubble Sort O(N²)</option>
+                                            <option value="selection">Selection Sort O(N²)</option>
+                                            <option value="insertion">Insertion Sort O(N²)</option>
+                                            <option value="quick">Quick Sort O(N log N)</option>
+                                            <option value="merge" selected>Merge Sort O(N log N)</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-field">
+                                        <label class="form-label">Key</label>
+                                        <select id="sortField" class="form-select">
+                                            <option value="id">ID</option>
+                                            <option value="name">Name</option>
+                                            <option value="type">Type</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-field">
+                                        <label class="form-label">Order</label>
+                                        <select id="sortOrder" class="form-select">
+                                            <option value="asc">Ascending</option>
+                                            <option value="desc">Descending</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <button id="btnRunSort" class="btn-topbar-primary btn-block" style="margin-top: 12px;">Execute Sort</button>
+                                <div class="result-terminal-box" id="sortResultBox">
+                                    Ready to execute sort.
+                                </div>
+                            </div>
+                            <div class="card-white flex-1">
+                                <div class="card-top-header">
+                                    <div>
+                                        <span class="card-kicker">SORTING SPECIFICATIONS</span>
+                                        <h3 class="card-heading">Comparative Performance</h3>
+                                    </div>
+                                </div>
+                                <div class="spec-list-clean">
+                                    <div class="spec-item-row">
+                                        <span class="spec-item-name">Bubble Sort Complexity:</span>
+                                        <span class="spec-item-val font-mono">O(N²) comparisons, pairwise adjacent swapping</span>
+                                    </div>
+                                    <div class="spec-item-row">
+                                        <span class="spec-item-name">Selection Sort Complexity:</span>
+                                        <span class="spec-item-val font-mono">O(N²) comparisons, O(N) memory writes</span>
+                                    </div>
+                                    <div class="spec-item-row">
+                                        <span class="spec-item-name">In-Place Guarantee:</span>
+                                        <span class="spec-item-val font-mono">O(1) auxiliary space overhead</span>
+                                    </div>
+                                    <div class="spec-item-row">
+                                        <span class="spec-item-name">Ordering Stability:</span>
+                                        <span class="spec-item-val">Maintains component placement stability during canvas re-renders</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 3: HASHING (Hash Table, Linear Probing & Collision Demonstration) -->
+                    <div id="tab-hashing" class="analysis-tab-pane">
+                        <div class="card-white">
+                            <div class="card-top-header">
+                                <div>
+                                    <span class="card-kicker">HASH TABLE &amp; LINEAR PROBING</span>
+                                    <h3 class="card-heading">Hash Table &amp; Linear Probing</h3>
+                                </div>
+                                <span class="pill-badge-green">Capacity = 17 (Prime Modulus)</span>
+                            </div>
+                            <p class="card-subtext">Fixed prime capacity hash table demonstrating open-addressing with linear probing collision resolution: <code>h(k, i) = (hash(k) + i) mod 17</code>. Supports component indexing, search, insertion, and collision demonstration.</p>
+                            <div class="button-strip" style="margin-bottom: 14px;">
+                                <button id="btnRefreshHash" class="btn-topbar-secondary">Refresh Table</button>
+                                <button id="btnInsertSampleHash" class="btn-topbar-secondary">+ Insert Component</button>
+                                <button id="btnHashCollisionDemo" class="btn-topbar-secondary">Collision Demonstration</button>
+                            </div>
+                            <div class="hash-grid-display" id="hashTableGrid">
+                                Loading hash index slots...
+                            </div>
+                            <div class="hash-log-strip" id="hashCollisionLog">
+                                Collision log ready.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 4: PERFORMANCE (Benchmark comparisons) -->
+                    <div id="tab-performance" class="analysis-tab-pane">
+                        <div class="card-white">
+                            <div class="card-top-header">
+                                <div>
+                                    <span class="card-kicker">BENCHMARK COMPARISONS</span>
+                                    <h3 class="card-heading">Benchmark Comparisons</h3>
+                                </div>
+                                <button id="btnRunBenchmark" class="btn-topbar-primary">Run Empirical Benchmarks</button>
+                            </div>
+                            <p class="card-subtext">Empirical cycle, comparison count, and memory latency measurements comparing search and sort algorithms across datasets of varying magnitude (N = 8, 16, 32).</p>
+                            <div class="benchmark-container" id="benchmarkResults">
+                                <span class="placeholder-note">Click "Run Empirical Benchmarks" to compare operations across datasets (N = 8, 16, 32).</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 5: TOPOLOGY VALIDATION -->
+                    <div id="tab-validation" class="analysis-tab-pane">
+                        <div class="card-white">
+                            <div class="card-top-header">
+                                <div>
+                                    <span class="card-kicker">DECISION-MAKING ENGINE</span>
+                                    <h3 class="card-heading">Circuit Topology Validator</h3>
+                                </div>
+                            </div>
+                            <p class="card-subtext">Automated design-rule checking (DRC) validating directed acyclic graph (DAG) structure, dangling input detection, and feedback loop analysis.</p>
+                            <div class="form-grid-two" style="align-items: flex-end;">
+                                <div class="form-field flex-1">
+                                    <label class="form-label">Inspection Scenario</label>
+                                    <select id="validationScenario" class="form-select">
+                                        <option value="scenario1">Scenario 1: Valid Multi-Stage Cascade (AND -> OR -> NOT)</option>
+                                        <option value="scenario2">Scenario 2: Dangling Floating Pin Detection</option>
+                                        <option value="scenario3">Scenario 3: Cyclic Feedback Loop Detection</option>
+                                        <option value="current">Current Canvas Circuit State</option>
+                                    </select>
+                                </div>
+                                <button id="btnRunValidation" class="btn-topbar-primary" style="height: 38px;">Validate Circuit</button>
+                            </div>
+                            <div class="validation-output-card" id="validationReportBox">
+                                Select a scenario and click "Validate Circuit" to run topology verification.
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ========================================================= -->
+                <!-- SCREEN 6: PROCESSOR LAB                                   -->
+                <!-- ========================================================= -->
+                <section id="screen-processor" class="app-screen">
+                    <div class="screen-header-group">
+                        <div class="screen-kicker">ENGINEERING TOOLS</div>
+                        <h2 class="screen-title">Processor Lab</h2>
+                        <p class="screen-description">Hardware-level execution engines, native AMD64 arithmetic co-processor, high-performance C++ state machine, component serialization framework, and OpenGL rasterization pipeline.</p>
+                    </div>
+
+                    <div class="overview-grid-row">
+                        <!-- COA High-Speed Arithmetic: Booth's Multiplier & Fast Carry Lookahead Adder -->
+                        <div class="card-white flex-1" style="border:1px solid #10b981;">
+                            <div class="card-top-header">
+                                <div>
+                                    <span class="card-kicker" style="color:#10b981;">COA HARDWARE ARITHMETIC UNIT</span>
+                                    <h3 class="card-heading">Booth's Multiplication &amp; Carry Lookahead Fast Adder</h3>
+                                </div>
+                                <span class="badge-neutral" style="border-color:#10b981; color:#34d399;">ALU Core Engine</span>
+                            </div>
+                            <p class="card-subtext">Genuine hardware-accurate digital logic arithmetic: 2's complement Booth recoding with arithmetic right shifts (ARS) and Carry Lookahead fast carry computation (C<sub>i+1</sub> = G<sub>i</sub> + P<sub>i</sub>·C<sub>i</sub>).</p>
+                            
+                            <div class="form-grid-three" style="margin-top:10px;">
+                                <div class="form-field">
+                                    <label class="form-label">ALU Operation</label>
+                                    <select id="coaArithOp" class="form-select">
+                                        <option value="booth">Booth's Multiplication (Signed 2's Complement)</option>
+                                        <option value="cla">Carry Lookahead Fast Adder (CLA)</option>
+                                    </select>
+                                </div>
+                                <div class="form-field">
+                                    <label class="form-label">Operand A (Multiplicand / Addend)</label>
+                                    <input type="number" id="coaOpA" class="form-input" value="7" step="1">
+                                </div>
+                                <div class="form-field">
+                                    <label class="form-label">Operand B (Multiplier / Augend)</label>
+                                    <input type="number" id="coaOpB" class="form-input" value="-3" step="1">
+                                </div>
+                            </div>
+
+                            <div style="display:flex; gap:10px; align-items:center; margin-top:10px;">
+                                <div style="display:flex; align-items:center; gap:6px;">
+                                    <label class="form-label" style="margin-bottom:0;">Word Width:</label>
+                                    <select id="coaBitWidth" class="form-select" style="width:90px;">
+                                        <option value="4">4-bit</option>
+                                        <option value="8" selected>8-bit</option>
+                                        <option value="16">16-bit</option>
+                                    </select>
+                                </div>
+                                <button id="btnExecuteCoaArith" class="btn-topbar-primary" style="flex:1;">Execute Arithmetic Operation</button>
+                            </div>
+
+                            <div class="result-terminal-box" id="coaArithResultBox" style="margin-top:12px; max-height:240px; overflow-y:auto;">
+                                Ready to execute Booth's multiplication or Carry Lookahead fast addition.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="overview-grid-row" style="margin-top: 18px;">
+                        <!-- AMD64 64-Bit Assembly Co-Processor Card -->
+                        <div class="card-white flex-1">
+                            <div class="card-top-header">
+                                <div>
+                                    <span class="card-kicker">HARDWARE CO-PROCESSOR</span>
+                                    <h3 class="card-heading">AMD64 Hardware Arithmetic Engine</h3>
+                                </div>
+                            </div>
+                            <p class="card-subtext">Register-level successive addition ALU implemented in 64-bit x86-64 assembly for truth table evaluation and discrete digital logic arithmetic.</p>
+                            <div class="calc-row-clean">
+                                <label class="form-label" style="margin-bottom:0;">Inputs (N):</label>
+                                <input type="number" id="coaInputNum" value="3" min="1" max="10" class="form-input" style="width: 70px;">
+                                <button id="btnCalcCoa" class="btn-topbar-secondary">Compute 2ᴺ Rows</button>
+                                <span id="coaCalcResult" class="pill-badge-green">2³ = 8 rows</span>
+                            </div>
+                            <button id="btnTestCoa" class="btn-topbar-primary btn-block" style="margin-top: 14px;">Execute Hardware Co-Processor Test Suite (test_alp.exe)</button>
+                            <div class="result-terminal-box" id="coaOutputTerminal">
+                                Click button to execute native 64-bit assembly test suite...
+                            </div>
+                        </div>
+
+                        <!-- C++ State Machine & Undo Stack Card -->
+                        <div class="card-white flex-1">
+                            <div class="card-top-header">
+                                <div>
+                                    <span class="card-kicker">EXECUTION ENGINE &amp; STATE MACHINE</span>
+                                    <h3 class="card-heading">Circuit State &amp; Undo Stack Manager</h3>
+                                </div>
+                            </div>
+                            <p class="card-subtext">High-performance boundary-protected C++ state stack tracking circuit mutation vectors for non-destructive undo and rollback operations.</p>
+                            <div class="stack-history-box" id="stackVisualizer">
+                                <div class="stack-slot-clean empty">Undo Stack Empty (LIFO Depth: 0/32)</div>
+                            </div>
+                            <button id="btnTestCpp" class="btn-topbar-primary btn-block" style="margin-top: 14px;">Execute Native State Machine Runner (test_runner.exe)</button>
+                            <div class="result-terminal-box" id="cppOutputTerminal">
+                                Click button to execute native C++ verification runner...
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="overview-grid-row" style="margin-top: 18px;">
+                        <!-- Java Serialization & Generic Framework Card -->
+                        <div class="card-white flex-1">
+                            <div class="card-top-header">
+                                <div>
+                                    <span class="card-kicker">COMPONENT SERIALIZATION &amp; TYPE SYSTEM</span>
+                                    <h3 class="card-heading">Object Framework &amp; File Serialization</h3>
+                                </div>
+                            </div>
+                            <p class="card-subtext">Type-safe component framework with predicate-based generic collection filtering and persistent .circ file serialization.</p>
+                            <div class="button-strip" style="margin-bottom: 12px;">
+                                <button id="btnExportCircuitFile" class="btn-topbar-secondary">Export Circuit (.circ)</button>
+                                <button id="btnFilterGenerics" class="btn-topbar-secondary">Filter Multi-Input Gates</button>
+                                <button id="btnTestJava" class="btn-topbar-primary">Run Component Unit Tests</button>
+                            </div>
+                            <button id="btnRunJavaTask4Suite" class="btn-topbar-secondary btn-block">Run Serialization &amp; Generics Suite</button>
+                            <div class="result-terminal-box" id="fileOpOutput">
+                                Ready for Java operations and generic collection filtering.
+                            </div>
+                            <div class="result-terminal-box" id="javaOutputTerminal" style="margin-top: 8px;">
+                                Java test output will appear here...
+                            </div>
+                        </div>
+
+                        <!-- OpenGL Hardware Graphics Card -->
+                        <div class="card-white flex-1">
+                            <div class="card-top-header">
+                                <div>
+                                    <span class="card-kicker">GPU ACCELERATION &amp; RENDER PIPELINE</span>
+                                    <h3 class="card-heading">OpenGL Hardware Render Pipeline</h3>
+                                </div>
+                            </div>
+                            <p class="card-subtext">Hardware-accelerated viewport rendering pipeline verifying ANSI/IEEE logic gate primitives, projection matrices, and PCB raster textures.</p>
+                            <button id="btnTestGraphics" class="btn-topbar-primary btn-block" style="margin-top: 10px;">Execute OpenGL Render Pipeline Verification (--test)</button>
+                            <div class="result-terminal-box" id="cgOutputTerminal" style="margin-top: 12px;">
+                                Click button to execute OpenGL headless automated verification...
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ========================================================= -->
+                <!-- SCREEN: GRAPHICS LAB (COMPUTER GRAPHICS & VISUAL ENGINE)   -->
+                <!-- ========================================================= -->
+                <section id="screen-graphics" class="app-screen">
+                    <div class="screen-header-group">
+                        <div class="screen-kicker">ENGINEERING TOOLS</div>
+                        <h2 class="screen-title">Graphics Lab</h2>
+                        <p class="screen-description">Interactive computer graphics workbench implementing fundamental algorithms: Bresenham line drawing, midpoint circles, scanline polygon filling, 2D affine transformations, and 3D projection pipelines.</p>
+                    </div>
+
+                    <!-- Graphics Lab Tab Navigation -->
+                    <div class="analysis-tabs-nav" id="graphicsTabsNav">
+                        <button class="analysis-tab-btn active" data-cg-tab="cg-tab-line">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="5" y1="19" x2="19" y2="5"></line>
+                            </svg>
+                            Line Drawing
+                        </button>
+                        <button class="analysis-tab-btn" data-cg-tab="cg-tab-circle">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                            </svg>
+                            Circle Drawing
+                        </button>
+                        <button class="analysis-tab-btn" data-cg-tab="cg-tab-polygon">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"></polygon>
+                            </svg>
+                            Polygon Filling
+                        </button>
+                        <button class="analysis-tab-btn" data-cg-tab="cg-tab-2d">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+                                <path d="M7 17l10-10"></path>
+                            </svg>
+                            2D Transformations
+                        </button>
+                        <button class="analysis-tab-btn" data-cg-tab="cg-tab-3d">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2l9 4.9v9.2L12 21l-9-4.9V6.9L12 2z"></path>
+                                <path d="M12 12l9-4.9"></path>
+                                <path d="M12 12v9"></path>
+                                <path d="M12 12L3 7.1"></path>
+                            </svg>
+                            3D Transformations
+                        </button>
+                        <button class="analysis-tab-btn" data-cg-tab="cg-tab-circuit">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 14h6v6"></path>
+                                <path d="M20 10h-6V4"></path>
+                                <path d="M14 10l7-7"></path>
+                                <path d="M3 21l7-7"></path>
+                            </svg>
+                            Circuit Graphics
+                        </button>
+                    </div>
+
+                    <!-- TAB 1: LINE DRAWING (BRESENHAM) -->
+                    <div class="cg-tab-pane active" id="cg-tab-line">
+                        <div class="card-white" style="margin-bottom: 16px;">
+                            <div class="card-top-header">
+                                <div>
+                                    <span class="card-kicker">INTEGER RASTERIZATION ALGORITHM</span>
+                                    <h3 class="card-heading">Bresenham's Line Drawing Algorithm</h3>
+                                </div>
+                                <span class="badge-tech">All 8 Octants (|m| ≤ 1, |m| > 1)</span>
+                            </div>
+                            <p class="card-subtext">Calculates discrete pixel coordinates along a line using purely incremental integer addition and decision variable arithmetic $e_2 = 2 \cdot err$. Used for rendering circuit wires across horizontal, vertical, diagonal, and arbitrary orthogonal routes.</p>
+                            
+                            <div class="cg-controls-bar">
+                                <div class="cg-input-group">
+                                    <label>Start (X₀, Y₀):</label>
+                                    <input type="number" id="cgLineX0" value="5" min="0" max="49" class="input-number-sm">
+                                    <input type="number" id="cgLineY0" value="5" min="0" max="29" class="input-number-sm">
+                                </div>
+                                <div class="cg-input-group">
+                                    <label>End (X₁, Y₁):</label>
+                                    <input type="number" id="cgLineX1" value="42" min="0" max="49" class="input-number-sm">
+                                    <input type="number" id="cgLineY1" value="22" min="0" max="29" class="input-number-sm">
+                                </div>
+                                <div class="cg-btn-group">
+                                    <button id="btnRunBresenham" class="btn-topbar-primary">Rasterize Line</button>
+                                    <button id="btnAnimateBresenham" class="btn-dark-secondary">Step Animation</button>
+                                </div>
+                            </div>
+
+                            <div class="cg-preset-row">
+                                <span class="preset-label">EDA Trace Presets:</span>
+                                <button class="btn-preset-pill" onclick="setLinePreset(4,15, 45,15)">Horizontal Wire</button>
+                                <button class="btn-preset-pill" onclick="setLinePreset(25,3, 25,27)">Vertical Wire</button>
+                                <button class="btn-preset-pill" onclick="setLinePreset(5,5, 25,25)">Diagonal (m=1.0)</button>
+                                <button class="btn-preset-pill" onclick="setLinePreset(5,25, 40,6)">Negative Slope (Octant 7)</button>
+                                <button class="btn-preset-pill" onclick="setLinePreset(12,28, 20,4)">Steep Slope (|m| > 1)</button>
+                            </div>
+                        </div>
+
+                        <div class="cg-canvas-container card-white">
+                            <div class="cg-canvas-header">
+                                <span class="canvas-legend">Pixel Grid Canvas (50 × 30 Matrix, 14px Cell Pitch)</span>
+                                <span class="canvas-legend-stat" id="cgLineStats">Pixels: 0 | Δx: 0 | Δy: 0 | Slope: 0.0</span>
+                            </div>
+                            <div class="pixel-canvas-scroll">
+                                <canvas id="canvasBresenham" width="800" height="420" class="pixel-grid-canvas"></canvas>
+                            </div>
+                            <div class="cg-diagnostics-box" id="cgLineDiagnostics">
+                                Click "Rasterize Line" to compute discrete pixel coordinates and error decision history.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 2: CIRCLE DRAWING (MIDPOINT CIRCLE) -->
+                    <div class="cg-tab-pane" id="cg-tab-circle">
+                        <div class="card-white" style="margin-bottom: 16px;">
+                            <div class="card-top-header">
+                                <div>
+                                    <span class="card-kicker">8-WAY SYMMETRIC RASTERIZATION</span>
+                                    <h3 class="card-heading">Midpoint Circle Drawing Algorithm</h3>
+                                </div>
+                                <span class="badge-tech">Integer Decision: p = 1 - r</span>
+                            </div>
+                            <p class="card-subtext">Generates true circular geometry using incremental midpoint decisions and 8-way symmetric plotting $(x_c \pm x, y_c \pm y)$. Implemented for logic gate inversion bubbles (NOT, NAND, NOR, XNOR) and circular pin indicators without built-in OpenGL circles.</p>
+
+                            <div class="cg-controls-bar">
+                                <div class="cg-input-group">
+                                    <label>Center (Xc, Yc):</label>
+                                    <input type="number" id="cgCircleXc" value="25" min="5" max="45" class="input-number-sm">
+                                    <input type="number" id="cgCircleYc" value="15" min="5" max="25" class="input-number-sm">
+                                </div>
+                                <div class="cg-input-group">
+                                    <label>Radius (R):</label>
+                                    <input type="range" id="cgCircleRadius" value="11" min="3" max="14" class="slider-control" style="width:110px;">
+                                    <span id="cgCircleRadiusVal" style="font-weight:600; color:#10b981;">11 px</span>
+                                </div>
+                                <div class="cg-input-group">
+                                    <label class="canvas-toggle">
+                                        <input type="checkbox" id="chkCircleFill">
+                                        <span>Solid Inversion Bubble Fill</span>
+                                    </label>
+                                    <label class="canvas-toggle">
+                                        <input type="checkbox" id="chkCircleOctants" checked>
+                                        <span>8-Octant Colors</span>
+                                    </label>
+                                </div>
+                                <div class="cg-btn-group">
+                                    <button id="btnRunCircle" class="btn-topbar-primary">Rasterize Circle</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="cg-canvas-container card-white">
+                            <div class="cg-canvas-header">
+                                <span class="canvas-legend">Midpoint Circle Viewport (8-Fold Symmetry Plane)</span>
+                                <span class="canvas-legend-stat" id="cgCircleStats">Pixels: 0 | Initial p₀: 0 | Total Steps: 0</span>
+                            </div>
+                            <div class="pixel-canvas-scroll">
+                                <canvas id="canvasCircle" width="800" height="420" class="pixel-grid-canvas"></canvas>
+                            </div>
+                            <div class="cg-diagnostics-box" id="cgCircleDiagnostics">
+                                Ready to draw. Adjust radius or toggle solid inversion bubble fill.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 3: POLYGON FILLING (SCANLINE) -->
+                    <div class="cg-tab-pane" id="cg-tab-polygon">
+                        <div class="card-white" style="margin-bottom: 16px;">
+                            <div class="card-top-header">
+                                <div>
+                                    <span class="card-kicker">AREA RASTERIZATION &amp; ET/AET</span>
+                                    <h3 class="card-heading">Scanline Polygon Filling Algorithm</h3>
+                                </div>
+                                <span class="badge-tech">Active Edge Table (AET) Parity Rule</span>
+                            </div>
+                            <p class="card-subtext">Fills arbitrary polygonal boundaries by constructing an Edge Table (ET) indexed by minimum Y, maintaining a sorted Active Edge Table (AET), and rasterizing horizontal pixel spans between parity-matched edge intersections. Used to fill logic gate bodies and custom IC outlines.</p>
+
+                            <div class="cg-controls-bar">
+                                <div class="cg-input-group">
+                                    <label>Component Preset:</label>
+                                    <select id="cgPolygonPreset" class="select-clean">
+                                        <option value="and_gate">AND Gate Symbol Profile</option>
+                                        <option value="or_gate">OR Gate Concave Body</option>
+                                        <option value="not_gate">NOT Inverter Triangular Body</option>
+                                        <option value="ic_chip">Dual In-line IC Package Body</option>
+                                        <option value="solder_pad">Octagonal PCB Solder Pad</option>
+                                    </select>
+                                </div>
+                                <div class="cg-input-group">
+                                    <label>Fill Color Theme:</label>
+                                    <select id="cgPolygonColor" class="select-clean">
+                                        <option value="#10b981">Silicon Emerald (#10b981)</option>
+                                        <option value="#38bdf8">EDA Cyan (#38bdf8)</option>
+                                        <option value="#f59e0b">Copper Amber (#f59e0b)</option>
+                                        <option value="#a855f7">Ceramic Violet (#a855f7)</option>
+                                    </select>
+                                </div>
+                                <div class="cg-btn-group">
+                                    <button id="btnRunScanline" class="btn-topbar-primary">Execute Scanline Fill</button>
+                                    <button id="btnStepScanline" class="btn-dark-secondary">Step Sweep Scanline</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="cg-canvas-container card-white">
+                            <div class="cg-canvas-header">
+                                <span class="canvas-legend">Scanline Rasterizer Visualizer</span>
+                                <span class="canvas-legend-stat" id="cgScanlineStats">Vertices: 0 | Scanlines Filled: 0 | Spans: 0</span>
+                            </div>
+                            <div class="pixel-canvas-scroll">
+                                <canvas id="canvasScanline" width="800" height="420" class="pixel-grid-canvas"></canvas>
+                            </div>
+                            <div class="cg-diagnostics-box" id="cgScanlineDiagnostics">
+                                Select component preset and click "Execute Scanline Fill" to view edge intersection spans.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 4: 2D TRANSFORMATIONS -->
+                    <div class="cg-tab-pane" id="cg-tab-2d">
+                        <div class="card-white" style="margin-bottom: 16px;">
+                            <div class="card-top-header">
+                                <div>
+                                    <span class="card-kicker">3×3 HOMOGENEOUS AFFINE PIPELINE</span>
+                                    <h3 class="card-heading">2D Transformations (Translation, Rotation, Reflection, Scaling)</h3>
+                                </div>
+                                <span class="badge-tech">Matrix: P' = T · R · S · M · P</span>
+                            </div>
+                            <p class="card-subtext">Transforms circuit components in 2D Euclidean space using 3×3 homogeneous transformation matrices. Preserves sub-pixel pin positions and wire anchor connectivity across rotations and horizontal/vertical reflections.</p>
+
+                            <div class="cg-controls-bar" style="flex-wrap: wrap; gap: 14px;">
+                                <div class="cg-input-group">
+                                    <label>Component:</label>
+                                    <select id="cg2DGateType" class="select-clean">
+                                        <option value="AND">AND Gate</option>
+                                        <option value="NAND">NAND Gate</option>
+                                        <option value="OR">OR Gate</option>
+                                        <option value="NOR">NOR Gate</option>
+                                        <option value="XOR">XOR Gate</option>
+                                        <option value="NOT">NOT Inverter</option>
+                                    </select>
+                                </div>
+                                <div class="cg-input-group">
+                                    <label>Rotation (θ):</label>
+                                    <button class="btn-preset-pill" onclick="set2DRotation(0)">0°</button>
+                                    <button class="btn-preset-pill" onclick="set2DRotation(90)">90°</button>
+                                    <button class="btn-preset-pill" onclick="set2DRotation(180)">180°</button>
+                                    <button class="btn-preset-pill" onclick="set2DRotation(270)">270°</button>
+                                    <input type="range" id="cg2DRotSlider" value="0" min="0" max="360" step="15" class="slider-control" style="width:90px;">
+                                    <span id="cg2DRotVal" style="font-weight:600; color:#38bdf8;">0°</span>
+                                </div>
+                                <div class="cg-input-group">
+                                    <label>Reflection (Flip):</label>
+                                    <button id="btn2DFlipH" class="btn-preset-pill">Flip Horizontal (Mx)</button>
+                                    <button id="btn2DFlipV" class="btn-preset-pill">Flip Vertical (My)</button>
+                                </div>
+                                <div class="cg-input-group">
+                                    <label>Scale (S):</label>
+                                    <input type="range" id="cg2DScaleSlider" value="1.0" min="0.5" max="2.0" step="0.1" class="slider-control" style="width:80px;">
+                                    <span id="cg2DScaleVal" style="font-weight:600; color:#10b981;">1.0X</span>
+                                </div>
+                                <div class="cg-input-group">
+                                    <label>Translation (dx, dy):</label>
+                                    <input type="number" id="cg2DTransX" value="0" min="-150" max="150" step="10" class="input-number-sm">
+                                    <input type="number" id="cg2DTransY" value="0" min="-100" max="100" step="10" class="input-number-sm">
+                                </div>
+                                <div class="cg-btn-group">
+                                    <button id="btn2DReset" class="btn-dark-outline">Reset Identity</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="cg-grid-split">
+                            <div class="cg-canvas-container card-white flex-2">
+                                <div class="cg-canvas-header">
+                                    <span class="canvas-legend">2D Coordinate Transformation Plane (Ghost Origin + Transformed State)</span>
+                                </div>
+                                <canvas id="canvas2DTransform" width="560" height="380" class="pixel-grid-canvas"></canvas>
+                            </div>
+
+                            <div class="card-white flex-1">
+                                <div class="card-top-header">
+                                    <h4 class="card-heading" style="font-size:14px;">3×3 Homogeneous Transformation Matrix</h4>
+                                </div>
+                                <div class="matrix-box" id="matrix2DDisplay">
+                                    <table class="matrix-table">
+                                        <tr><td id="m00">1.00</td><td id="m01">0.00</td><td id="m02">0.00</td></tr>
+                                        <tr><td id="m10">0.00</td><td id="m11">1.00</td><td id="m12">0.00</td></tr>
+                                        <tr><td id="m20">0.00</td><td id="m21">0.00</td><td id="m22">1.00</td></tr>
+                                    </table>
+                                </div>
+                                <h4 class="card-heading" style="font-size:13px; margin-top:16px;">Pin Coordinate Synchronization</h4>
+                                <div class="pin-sync-table" id="pinSyncDisplay">
+                                    <div class="pin-row"><span>Input A (Pin 0):</span> <strong id="pinIn0Val">(-45.0, 13.5)</strong></div>
+                                    <div class="pin-row"><span>Input B (Pin 1):</span> <strong id="pinIn1Val">(-45.0, -13.5)</strong></div>
+                                    <div class="pin-row"><span>Output (Pin Out):</span> <strong id="pinOutVal">(45.0, 0.0)</strong></div>
+                                    <div class="pin-status-pill verified">Wire Anchors Synchronized</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 5: 3D TRANSFORMATIONS -->
+                    <div class="cg-tab-pane" id="cg-tab-3d">
+                        <div class="card-white" style="margin-bottom: 16px;">
+                            <div class="card-top-header">
+                                <div>
+                                    <span class="card-kicker">4×4 HOMOGENEOUS MATRIX PIPELINE</span>
+                                    <h3 class="card-heading">3D Transformations &amp; Projection</h3>
+                                </div>
+                                <span class="badge-tech">Model-View-Projection: P' = M_proj · M_view · M_model · P</span>
+                            </div>
+                            <p class="card-subtext">3D hardware visualization rendering integrated circuit components (DIP-14 package) with extruded metallic lead pins, status LEDs, camera orbit rotation, and perspective projection.</p>
+
+                            <div class="cg-controls-bar" style="flex-wrap: wrap; gap: 14px;">
+                                <div class="cg-input-group">
+                                    <label>Pitch (X-Axis):</label>
+                                    <input type="range" id="cg3DPitch" value="28" min="-85" max="85" class="slider-control" style="width:90px;">
+                                    <span id="cg3DPitchVal" style="color:#38bdf8; font-weight:600;">28°</span>
+                                </div>
+                                <div class="cg-input-group">
+                                    <label>Yaw (Y-Axis):</label>
+                                    <input type="range" id="cg3DYaw" value="-35" min="-180" max="180" class="slider-control" style="width:90px;">
+                                    <span id="cg3DYawVal" style="color:#38bdf8; font-weight:600;">-35°</span>
+                                </div>
+                                <div class="cg-input-group">
+                                    <label>Roll (Z-Axis):</label>
+                                    <input type="range" id="cg3DRoll" value="0" min="-180" max="180" class="slider-control" style="width:90px;">
+                                    <span id="cg3DRollVal" style="color:#38bdf8; font-weight:600;">0°</span>
+                                </div>
+                                <div class="cg-input-group">
+                                    <label>Zoom / Distance:</label>
+                                    <input type="range" id="cg3DZoom" value="480" min="200" max="900" class="slider-control" style="width:90px;">
+                                    <span id="cg3DZoomVal" style="color:#10b981; font-weight:600;">480px</span>
+                                </div>
+                                <div class="cg-input-group">
+                                    <label class="canvas-toggle">
+                                        <input type="checkbox" id="chk3DAutoRotate">
+                                        <span>Auto-Orbit</span>
+                                    </label>
+                                    <label class="canvas-toggle">
+                                        <input type="checkbox" id="chk3DShaded" checked>
+                                        <span>Shaded DIP Package</span>
+                                    </label>
+                                </div>
+                                <div class="cg-btn-group">
+                                    <button id="btn3DReset" class="btn-dark-outline">Reset Camera</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="cg-grid-split">
+                            <div class="cg-canvas-container card-white flex-2">
+                                <div class="cg-canvas-header">
+                                    <span class="canvas-legend">3D IC Component Viewport (Click and drag mouse to orbit camera)</span>
+                                </div>
+                                <canvas id="canvas3DTransform" width="560" height="380" class="pixel-grid-canvas"></canvas>
+                            </div>
+
+                            <div class="card-white flex-1">
+                                <div class="card-top-header">
+                                    <h4 class="card-heading" style="font-size:14px;">4×4 ModelView &amp; Projection Matrices</h4>
+                                </div>
+                                <div class="matrix-box" id="matrix3DDisplay">
+                                    <p style="font-size:11px; color:#64748b; margin-bottom:4px;">Rotated Camera View Matrix (Normalized):</p>
+                                    <table class="matrix-table small">
+                                        <tr><td id="m3_00">0.82</td><td id="m3_01">0.00</td><td id="m3_02">-0.57</td><td id="m3_03">0.0</td></tr>
+                                        <tr><td id="m3_10">0.27</td><td id="m3_11">0.88</td><td id="m3_12">0.39</td><td id="m3_13">0.0</td></tr>
+                                        <tr><td id="m3_20">0.50</td><td id="m3_21">-0.47</td><td id="m3_22">0.72</td><td id="m3_23">-480.0</td></tr>
+                                        <tr><td id="m3_30">0.00</td><td id="m3_31">0.00</td><td id="m3_32">0.00</td><td id="m3_33">1.0</td></tr>
+                                    </table>
+                                </div>
+                                <div style="margin-top:14px; font-size:12px; color:#94a3b8; line-height:1.5;">
+                                    <strong>Render Features:</strong><br>
+                                    • Dual-In-Line (DIP-14) leadframe geometry<br>
+                                    • Extruded metallic leads with depth coordinates<br>
+                                    • Substrate pin-1 alignment notch<br>
+                                    • 3D perspective projection with focal depth
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 6: CIRCUIT GRAPHICS & C++ ENGINE -->
+                    <div class="cg-tab-pane" id="cg-tab-circuit">
+                        <div class="card-white" style="margin-bottom: 16px;">
+                            <div class="card-top-header">
+                                <div>
+                                    <span class="card-kicker">C++ &amp; OPENGL ENGINE EXECUTION</span>
+                                    <h3 class="card-heading">Computer Graphics Engine &amp; Verification Suite</h3>
+                                </div>
+                                <span class="badge-tech">logiccraft_cg.exe (GCC 16.2.0)</span>
+                            </div>
+                            <p class="card-subtext">Direct execution of the native C++ OpenGL graphics module testing all 6 core algorithms: Bresenham lines, Midpoint circles, Scanline polygon filling, 2D affine matrices, 3D projection, and gate transformation pin synchronization.</p>
+                            
+                            <button id="btnRunGraphicsVerification" class="btn-topbar-primary" style="margin-top: 6px;">
+                                Run C++ OpenGL Verification Suite (--test)
+                            </button>
+                        </div>
+
+                        <div class="card-white">
+                            <div class="card-top-header">
+                                <h4 class="card-heading" style="font-size:14px;">Native Engine Execution Output</h4>
+                                <span class="badge-status-green" id="cgEngineStatus">Ready to Run</span>
+                            </div>
+                            <div class="result-terminal-box" id="cgEngineTerminal" style="min-height: 220px; font-family: monospace; white-space: pre-wrap;">
+Click "Run C++ OpenGL Verification Suite" to execute logiccraft_cg.exe --test...
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ========================================================= -->
+                <!-- SCREEN 7: COMPONENT LIBRARY                               -->
+                <!-- ========================================================= -->
+                <section id="screen-components" class="app-screen">
+                    <div class="screen-header-group">
+                        <div class="screen-kicker">ASSETS &amp; STANDARDS</div>
+                        <h2 class="screen-title">Component Library</h2>
+                        <p class="screen-description">Standard ANSI/IEEE Std 91-1984 logic gate catalog with behavioral truth tables and latency specifications.</p>
+                        
+                        <!-- Real-time Filter & Sort Toolbar -->
+                        <div style="display:flex; gap:12px; align-items:center; margin-top:14px; background:#121a16; padding:10px 14px; border-radius:6px; border:1px solid #233129;">
+                            <div style="flex:1; display:flex; align-items:center; gap:8px;">
+                                <label class="form-label" style="margin-bottom:0; font-size:12px; color:#94a3b8;">Search:</label>
+                                <input type="text" id="libSearchInput" class="form-input" placeholder="Search gates by name or type..." style="padding:6px 10px; font-size:12px;">
+                            </div>
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <label class="form-label" style="margin-bottom:0; font-size:12px; color:#94a3b8;">Sort by:</label>
+                                <select id="libSortSelect" class="form-select" style="padding:6px 10px; font-size:12px; width:130px;">
+                                    <option value="name-asc">Name (A-Z)</option>
+                                    <option value="name-desc">Name (Z-A)</option>
+                                    <option value="delay-asc">Propagation Delay</option>
+                                    <option value="inputs-asc">Input Count</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="library-cards-grid">
+                        <div class="library-card">
+                            <div class="lib-card-top">
+                                <span class="gate-symbol-large">⩓</span>
+                                <div>
+                                    <h4 class="lib-gate-name">AND Gate</h4>
+                                    <span class="lib-gate-type">Conjunction (A · B)</span>
+                                </div>
+                            </div>
+                            <p class="lib-gate-desc">Outputs HIGH (1) if and only if all inputs are HIGH.</p>
+                            <div class="lib-specs">
+                                <span>Delay: <strong>5 ns</strong></span>
+                                <span>Inputs: <strong>2</strong></span>
+                            </div>
+                            <button class="btn-topbar-secondary btn-block lib-add-btn" data-gate-type="AND">+ Add to Circuit</button>
+                        </div>
+
+                        <div class="library-card">
+                            <div class="lib-card-top">
+                                <span class="gate-symbol-large">⩔</span>
+                                <div>
+                                    <h4 class="lib-gate-name">OR Gate</h4>
+                                    <span class="lib-gate-type">Disjunction (A + B)</span>
+                                </div>
+                            </div>
+                            <p class="lib-gate-desc">Outputs HIGH (1) if at least one input is HIGH.</p>
+                            <div class="lib-specs">
+                                <span>Delay: <strong>5 ns</strong></span>
+                                <span>Inputs: <strong>2</strong></span>
+                            </div>
+                            <button class="btn-topbar-secondary btn-block lib-add-btn" data-gate-type="OR">+ Add to Circuit</button>
+                        </div>
+
+                        <div class="library-card">
+                            <div class="lib-card-top">
+                                <span class="gate-symbol-large">¬</span>
+                                <div>
+                                    <h4 class="lib-gate-name">NOT Gate</h4>
+                                    <span class="lib-gate-type">Inverter (A')</span>
+                                </div>
+                            </div>
+                            <p class="lib-gate-desc">Inverts the input signal. Outputs HIGH when input is LOW.</p>
+                            <div class="lib-specs">
+                                <span>Delay: <strong>3 ns</strong></span>
+                                <span>Inputs: <strong>1</strong></span>
+                            </div>
+                            <button class="btn-topbar-secondary btn-block lib-add-btn" data-gate-type="NOT">+ Add to Circuit</button>
+                        </div>
+
+                        <div class="library-card">
+                            <div class="lib-card-top">
+                                <span class="gate-symbol-large">⊼</span>
+                                <div>
+                                    <h4 class="lib-gate-name">NAND Gate</h4>
+                                    <span class="lib-gate-type">Universal Gate ((A · B)')</span>
+                                </div>
+                            </div>
+                            <p class="lib-gate-desc">Universal logic gate. Outputs LOW only when all inputs are HIGH.</p>
+                            <div class="lib-specs">
+                                <span>Delay: <strong>5 ns</strong></span>
+                                <span>Inputs: <strong>2</strong></span>
+                            </div>
+                            <button class="btn-topbar-secondary btn-block lib-add-btn" data-gate-type="NAND">+ Add to Circuit</button>
+                        </div>
+
+                        <div class="library-card">
+                            <div class="lib-card-top">
+                                <span class="gate-symbol-large">⊽</span>
+                                <div>
+                                    <h4 class="lib-gate-name">NOR Gate</h4>
+                                    <span class="lib-gate-type">Universal Gate ((A + B)')</span>
+                                </div>
+                            </div>
+                            <p class="lib-gate-desc">Universal logic gate. Outputs HIGH only when all inputs are LOW.</p>
+                            <div class="lib-specs">
+                                <span>Delay: <strong>5 ns</strong></span>
+                                <span>Inputs: <strong>2</strong></span>
+                            </div>
+                            <button class="btn-topbar-secondary btn-block lib-add-btn" data-gate-type="NOR">+ Add to Circuit</button>
+                        </div>
+
+                        <div class="library-card">
+                            <div class="lib-card-top">
+                                <span class="gate-symbol-large">⊻</span>
+                                <div>
+                                    <h4 class="lib-gate-name">XOR Gate</h4>
+                                    <span class="lib-gate-type">Exclusive OR (A ⊕ B)</span>
+                                </div>
+                            </div>
+                            <p class="lib-gate-desc">Outputs HIGH when inputs differ. Parity and adder building block.</p>
+                            <div class="lib-specs">
+                                <span>Delay: <strong>7 ns</strong></span>
+                                <span>Inputs: <strong>2</strong></span>
+                            </div>
+                            <button class="btn-topbar-secondary btn-block lib-add-btn" data-gate-type="XOR">+ Add to Circuit</button>
+                        </div>
+
+                        <div class="library-card">
+                            <div class="lib-card-top">
+                                <span class="gate-symbol-large">⊙</span>
+                                <div>
+                                    <h4 class="lib-gate-name">XNOR Gate</h4>
+                                    <span class="lib-gate-type">Equivalence ((A ⊕ B)')</span>
+                                </div>
+                            </div>
+                            <p class="lib-gate-desc">Outputs HIGH when inputs are equal. Digital comparator building block.</p>
+                            <div class="lib-specs">
+                                <span>Delay: <strong>7 ns</strong></span>
+                                <span>Inputs: <strong>2</strong></span>
+                            </div>
+                            <button class="btn-topbar-secondary btn-block lib-add-btn" data-gate-type="XNOR">+ Add to Circuit</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ========================================================= -->
+                <!-- SCREEN 8: MY PROJECTS                                     -->
+                <!-- ========================================================= -->
+                <section id="screen-projects" class="app-screen">
+                    <div class="screen-header-group">
+                        <div class="screen-kicker">WORKSPACE</div>
+                        <h2 class="screen-title">My Projects</h2>
+                        <p class="screen-description">Manage saved circuit schematics, export designs, and initialize new engineering workspaces.</p>
+                    </div>
+
+                    <div class="card-white">
+                        <div class="card-top-header">
+                            <div>
+                                <span class="card-kicker">SAVED SCHEMATICS</span>
+                                <h3 class="card-heading">Available Circuits</h3>
+                            </div>
+                            <button id="btnCreateNewProjectFromList" class="btn-topbar-primary">+ Create New Circuit</button>
+                        </div>
+                        <div class="projects-table-wrap">
+                            <table class="clean-table" id="projectsCatalogTable">
+                                <thead>
+                                    <tr>
+                                        <th>Project Name</th>
+                                        <th>Project ID</th>
+                                        <th>Gate Count</th>
+                                        <th>Wires</th>
+                                        <th>Last Updated</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="projectsCatalogBody">
+                                    <!-- Populated dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="card-white" style="margin-top: 18px;">
+                        <div class="card-top-header">
+                            <div>
+                                <span class="card-kicker">EXPORT &amp; DOCUMENTATION</span>
+                                <h3 class="card-heading">Project Artifacts &amp; Documentation</h3>
+                            </div>
+                        </div>
+                        <div class="reports-download-row">
+                            <div class="report-download-item">
+                                <div class="report-icon">📄</div>
+                                <div class="report-info">
+                                    <h4 class="report-title">Master Project Technical Report</h4>
+                                    <p class="report-desc">Comprehensive engineering documentation covering digital logic circuits, native assembly, and verification.</p>
+                                </div>
+                                <a href="/docs/LogicCraft_Task4_Report.pdf" target="_blank" rel="noopener noreferrer" class="btn-topbar-secondary">View PDF</a>
+                                <a href="/docs/LogicCraft_Task4_Report.pdf?download=1" download="LogicCraft_Task4_Report.pdf" class="btn-topbar-primary">Download</a>
+                            </div>
+
+                            <div class="report-download-item">
+                                <div class="report-icon">📊</div>
+                                <div class="report-info">
+                                    <h4 class="report-title">Active Circuit Engineering Report</h4>
+                                    <p class="report-desc">Real-time export including schematic diagram, gate breakdown, 2ᴺ truth table, and validation diagnostics.</p>
+                                </div>
+                                <button id="btnDocExportPDF" class="btn-topbar-primary" style="padding: 6px 12px; font-size: 12px;">Export PDF</button>
+                                <button id="btnDocExportCSV" class="btn-topbar-secondary" style="padding: 6px 12px; font-size: 12px;">Export CSV</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ========================================================= -->
+                <!-- SCREEN 9: TECHNICAL REPORTS                               -->
+                <!-- ========================================================= -->
+                <section id="screen-reports" class="app-screen">
+                    <div class="screen-header-group">
+                        <div class="screen-kicker">DOCUMENTATION &amp; VERIFICATION</div>
+                        <h2 class="screen-title">Technical Reports</h2>
+                        <p class="screen-description">Official engineering reports, repository traceability registers, architectural specifications, and embedded documentation viewers.</p>
+                    </div>
+
+                    <div class="overview-grid-row">
+                        <!-- Master Project Technical Report Card -->
+                        <div class="card-white flex-1 doc-resource-card">
+                            <div class="card-top-header">
+                                <div>
+                                    <span class="card-kicker">CORE TECHNICAL SPECIFICATION</span>
+                                    <h3 class="card-heading">Master Project Technical Report</h3>
+                                </div>
+                                <span class="pill-badge-green">PDF REPORT</span>
+                            </div>
+                            <p class="card-subtext">Comprehensive engineering analysis documenting digital logic architecture, register-level AMD64 hardware arithmetic, procedural LIFO state rollback, and OpenGL rasterization verification.</p>
+                            <div class="doc-actions-row">
+                                <a href="/docs/LogicCraft_Task4_Report.pdf" target="_blank" rel="noopener noreferrer" class="btn-topbar-secondary">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                    View PDF
+                                </a>
+                                <a href="/docs/LogicCraft_Task4_Report.pdf?download=1" download="LogicCraft_Task4_Report.pdf" class="btn-topbar-primary">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                        <polyline points="7 10 12 15 17 10"></polyline>
+                                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                                    </svg>
+                                    Download PDF
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Dynamic Circuit Engineering Report Card -->
+                        <div class="card-white flex-1 doc-resource-card">
+                            <div class="card-top-header">
+                                <div>
+                                    <span class="card-kicker">CIRCUIT EXPORT</span>
+                                    <h3 class="card-heading">Export Circuit Report</h3>
+                                </div>
+                                <span class="pill-badge-blue">LIVE METRICS</span>
+                            </div>
+                            <p class="card-subtext">Export a publication-grade engineering report with circuit diagram, gate-wise breakdown, complete combinatorial truth table, simulation delays, and topology validation diagnostics.</p>
+                            <div class="doc-actions-row">
+                                <button id="btnReportsExportPDF" class="btn-topbar-primary">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                        <polyline points="14 2 14 8 20 8"></polyline>
+                                        <line x1="12" y1="18" x2="12" y2="12"></line>
+                                        <line x1="9" y1="15" x2="12" y2="18"></line>
+                                        <line x1="15" y1="15" x2="12" y2="18"></line>
+                                    </svg>
+                                    Export PDF
+                                </button>
+                                <button id="btnReportsExportCSV" class="btn-topbar-secondary">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                        <polyline points="7 10 12 15 17 10"></polyline>
+                                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                                    </svg>
+                                    Export CSV
+                                </button>
+                                <button id="btnReportsPrintReport" class="btn-topbar-secondary">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                                        <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                                        <rect x="6" y="14" width="12" height="8"></rect>
+                                    </svg>
+                                    View / Print
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Live Circuit Engineering Report & Verification Inspector -->
+                    <div class="card-white" style="margin-top: 18px;">
+                        <div class="card-top-header">
+                            <div>
+                                <span class="card-kicker">LIVE ARTIFACT INSPECTOR</span>
+                                <h3 class="card-heading">Active Circuit Report &amp; Verification Inspector</h3>
+                            </div>
+                            <div style="display: flex; gap: 8px;">
+                                <button id="btnInspectorExportPDF" class="btn-topbar-primary" style="padding: 4px 12px; font-size: 11px;">
+                                    Export PDF
+                                </button>
+                                <button id="btnInspectorExportCSV" class="btn-topbar-secondary" style="padding: 4px 12px; font-size: 11px;">
+                                    Export CSV
+                                </button>
+                            </div>
+                        </div>
+                        <p class="card-subtext">Real-time inspection of publication-grade engineering artifacts compiled dynamically from the currently designed circuit topology.</p>
+                        <div id="liveReportInspector" class="live-report-preview-box">
+                            <!-- Populated dynamically by app.js -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ========================================================= -->
+                <!-- SCREEN 10: TEST & VERIFICATION EVIDENCE                   -->
+                <!-- ========================================================= -->
+                <section id="screen-documentation" class="app-screen">
+                    <div class="screen-header-group">
+                        <div class="screen-kicker">DOCUMENTATION &amp; VERIFICATION</div>
+                        <h2 class="screen-title">Test &amp; Verification Evidence</h2>
+                        <p class="screen-description">Authoritative mapping of engineering concepts, exact file paths, line ranges, and testing evidence.</p>
+                    </div>
+
+                    <div class="card-white">
+                        <div class="card-top-header">
+                            <div>
+                                <span class="card-kicker">TRACEABILITY MATRIX</span>
+                                <h3 class="card-heading">Module &amp; Feature Verification Table</h3>
+                            </div>
+                        </div>
+                        <div class="truth-table-scroll-wrap">
+                            <table class="clean-table" id="coTable">
+                                <thead>
+                                    <tr>
+                                        <th>Module / Area</th>
+                                        <th>Outcome</th>
+                                        <th>Concept</th>
+                                        <th>Source File Path</th>
+                                        <th>Class / Function</th>
+                                        <th>Workbench Usage</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="coTableBody">
+                                    <!-- Populated dynamically via /api/co-mapping -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="card-white" style="margin-top: 18px;">
+                        <div class="card-top-header">
+                            <div>
+                                <span class="card-kicker">REPOSITORY DOCUMENT</span>
+                                <h3 class="card-heading">Authoritative Specification Artifact</h3>
+                            </div>
+                        </div>
+                        <div class="doc-viewer-box" id="markdownDocViewer">
+                            Loading documentation artifact...
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ========================================================= -->
+                <!-- SCREEN 10: SETTINGS                                       -->
+                <!-- ========================================================= -->
+                <section id="screen-settings" class="app-screen">
+                    <div class="screen-header-group">
+                        <div class="screen-kicker">CONFIGURATION</div>
+                        <h2 class="screen-title">Workspace Settings</h2>
+                        <p class="screen-description">Display preferences, simulation tolerances, and server diagnostics.</p>
+                    </div>
+
+                    <div class="overview-grid-row">
+                        <div class="card-white flex-1">
+                            <div class="card-top-header">
+                                <h3 class="card-heading">Canvas Visual Settings</h3>
+                            </div>
+                            <div class="settings-toggles-list">
+                                <label class="setting-toggle-row">
+                                    <div>
+                                        <span class="setting-name">Render Coordinate Grid</span>
+                                        <p class="setting-desc">Draw 30px aligned visual grid across the canvas.</p>
+                                    </div>
+                                    <input type="checkbox" id="settingChkGrid" checked>
+                                </label>
+                                <label class="setting-toggle-row">
+                                    <div>
+                                        <span class="setting-name">PCB Textured Substrate</span>
+                                        <p class="setting-desc">Render dark emerald substrate with copper trace lines.</p>
+                                    </div>
+                                    <input type="checkbox" id="settingChkPCB" checked>
+                                </label>
+                                <label class="setting-toggle-row">
+                                    <div>
+                                        <span class="setting-name">Active Signal Glow</span>
+                                        <p class="setting-desc">Display ambient glow on high (1) signal wires and terminals.</p>
+                                    </div>
+                                    <input type="checkbox" id="settingChkGlow" checked>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="card-white flex-1">
+                            <div class="card-top-header">
+                                <h3 class="card-heading">Server Diagnostics</h3>
+                            </div>
+                            <div class="diag-info-list" id="serverDiagList">
+                                <div class="diag-item">
+                                    <span class="diag-label">Node Backend Server:</span>
+                                    <span class="diag-val text-success">Online (Port 3000)</span>
+                                </div>
+                                <div class="diag-item">
+                                    <span class="diag-label">Simulation Topology Engine:</span>
+                                    <span class="diag-val text-success">Active</span>
+                                </div>
+                                <div class="diag-item">
+                                    <span class="diag-label">API Endpoints Verified:</span>
+                                    <span class="diag-val">10 REST routes</span>
+                                </div>
+                                <div class="diag-item">
+                                    <span class="diag-label">Client Architecture:</span>
+                                    <span class="diag-val">HTML5 + CSS3 + Vanilla JavaScript</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- Application Script -->
+    <script src="app.js"></script>
+</body>
+</html>

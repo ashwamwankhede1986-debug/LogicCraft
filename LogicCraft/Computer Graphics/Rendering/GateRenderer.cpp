@@ -68,11 +68,6 @@ static void drawStrokeChar(char c, float x, float y, float s) {
             glVertex2f(x, y + 7*s); glVertex2f(x + 7*s, y + 7*s);
             glVertex2f(x, y); glVertex2f(x + 9*s, y);
             break;
-        case 'F':
-            glVertex2f(x, y); glVertex2f(x, y + 14*s);
-            glVertex2f(x, y + 14*s); glVertex2f(x + 9*s, y + 14*s);
-            glVertex2f(x, y + 7*s); glVertex2f(x + 7*s, y + 7*s);
-            break;
         case 'G':
             glVertex2f(x + 9*s, y + 14*s); glVertex2f(x + 2*s, y + 14*s);
             glVertex2f(x + 2*s, y + 14*s); glVertex2f(x, y + 9*s);
@@ -82,26 +77,10 @@ static void drawStrokeChar(char c, float x, float y, float s) {
             glVertex2f(x + 9*s, y); glVertex2f(x + 9*s, y + 6*s);
             glVertex2f(x + 9*s, y + 6*s); glVertex2f(x + 5*s, y + 6*s);
             break;
-        case 'H':
-            glVertex2f(x, y); glVertex2f(x, y + 14*s);
-            glVertex2f(x + 9*s, y); glVertex2f(x + 9*s, y + 14*s);
-            glVertex2f(x, y + 7*s); glVertex2f(x + 9*s, y + 7*s);
-            break;
         case 'I':
             glVertex2f(x + 2*s, y + 14*s); glVertex2f(x + 8*s, y + 14*s);
             glVertex2f(x + 5*s, y + 14*s); glVertex2f(x + 5*s, y);
             glVertex2f(x + 2*s, y); glVertex2f(x + 8*s, y);
-            break;
-        case 'J':
-            glVertex2f(x + 9*s, y + 14*s); glVertex2f(x + 9*s, y + 3*s);
-            glVertex2f(x + 9*s, y + 3*s); glVertex2f(x + 7*s, y);
-            glVertex2f(x + 7*s, y); glVertex2f(x + 2*s, y);
-            glVertex2f(x + 2*s, y); glVertex2f(x, y + 4*s);
-            break;
-        case 'K':
-            glVertex2f(x, y); glVertex2f(x, y + 14*s);
-            glVertex2f(x + 9*s, y + 14*s); glVertex2f(x, y + 6*s);
-            glVertex2f(x + 2*s, y + 7*s); glVertex2f(x + 9*s, y);
             break;
         case 'L':
             glVertex2f(x, y + 14*s); glVertex2f(x, y);
@@ -135,17 +114,6 @@ static void drawStrokeChar(char c, float x, float y, float s) {
             glVertex2f(x + 9*s, y + 11*s); glVertex2f(x + 7*s, y + 8*s);
             glVertex2f(x + 7*s, y + 8*s); glVertex2f(x, y + 8*s);
             break;
-        case 'Q':
-            glVertex2f(x + 2*s, y); glVertex2f(x + 8*s, y);
-            glVertex2f(x + 8*s, y); glVertex2f(x + 10*s, y + 3*s);
-            glVertex2f(x + 10*s, y + 3*s); glVertex2f(x + 10*s, y + 11*s);
-            glVertex2f(x + 10*s, y + 11*s); glVertex2f(x + 8*s, y + 14*s);
-            glVertex2f(x + 8*s, y + 14*s); glVertex2f(x + 2*s, y + 14*s);
-            glVertex2f(x + 2*s, y + 14*s); glVertex2f(x, y + 11*s);
-            glVertex2f(x, y + 11*s); glVertex2f(x, y + 3*s);
-            glVertex2f(x, y + 3*s); glVertex2f(x + 2*s, y);
-            glVertex2f(x + 5*s, y + 5*s); glVertex2f(x + 10*s, y);
-            break;
         case 'R':
             glVertex2f(x, y); glVertex2f(x, y + 14*s);
             glVertex2f(x, y + 14*s); glVertex2f(x + 7*s, y + 14*s);
@@ -176,35 +144,14 @@ static void drawStrokeChar(char c, float x, float y, float s) {
             glVertex2f(x, y + 14*s); glVertex2f(x + 5*s, y);
             glVertex2f(x + 5*s, y); glVertex2f(x + 10*s, y + 14*s);
             break;
-        case 'W':
-            glVertex2f(x, y + 14*s); glVertex2f(x + 2.5f*s, y);
-            glVertex2f(x + 2.5f*s, y); glVertex2f(x + 5*s, y + 9*s);
-            glVertex2f(x + 5*s, y + 9*s); glVertex2f(x + 7.5f*s, y);
-            glVertex2f(x + 7.5f*s, y); glVertex2f(x + 10*s, y + 14*s);
-            break;
         case 'X':
             glVertex2f(x, y); glVertex2f(x + 10*s, y + 14*s);
             glVertex2f(x, y + 14*s); glVertex2f(x + 10*s, y);
-            break;
-        case 'Y':
-            glVertex2f(x, y + 14*s); glVertex2f(x + 5*s, y + 7*s);
-            glVertex2f(x + 10*s, y + 14*s); glVertex2f(x + 5*s, y + 7*s);
-            glVertex2f(x + 5*s, y + 7*s); glVertex2f(x + 5*s, y);
             break;
         case 'Z':
             glVertex2f(x, y + 14*s); glVertex2f(x + 9*s, y + 14*s);
             glVertex2f(x + 9*s, y + 14*s); glVertex2f(x, y);
             glVertex2f(x, y); glVertex2f(x + 9*s, y);
-            break;
-        case '0':
-            glVertex2f(x + 2*s, y); glVertex2f(x + 8*s, y);
-            glVertex2f(x + 8*s, y); glVertex2f(x + 10*s, y + 3*s);
-            glVertex2f(x + 10*s, y + 3*s); glVertex2f(x + 10*s, y + 11*s);
-            glVertex2f(x + 10*s, y + 11*s); glVertex2f(x + 8*s, y + 14*s);
-            glVertex2f(x + 8*s, y + 14*s); glVertex2f(x + 2*s, y + 14*s);
-            glVertex2f(x + 2*s, y + 14*s); glVertex2f(x, y + 11*s);
-            glVertex2f(x, y + 11*s); glVertex2f(x, y + 3*s);
-            glVertex2f(x, y + 3*s); glVertex2f(x + 2*s, y);
             break;
         case '1':
             glVertex2f(x + 2*s, y + 11*s); glVertex2f(x + 5*s, y + 14*s);
@@ -224,49 +171,15 @@ static void drawStrokeChar(char c, float x, float y, float s) {
             glVertex2f(x + 9*s, y + 5*s); glVertex2f(x + 6*s, y);
             glVertex2f(x + 6*s, y); glVertex2f(x + 1*s, y);
             break;
-        case '4':
-            glVertex2f(x + 8*s, y); glVertex2f(x + 8*s, y + 14*s);
-            glVertex2f(x + 8*s, y + 14*s); glVertex2f(x + 1*s, y + 5*s);
-            glVertex2f(x + 1*s, y + 5*s); glVertex2f(x + 10*s, y + 5*s);
-            break;
-        case '5':
-            glVertex2f(x + 9*s, y + 14*s); glVertex2f(x + 1*s, y + 14*s);
-            glVertex2f(x + 1*s, y + 14*s); glVertex2f(x + 1*s, y + 8*s);
-            glVertex2f(x + 1*s, y + 8*s); glVertex2f(x + 8*s, y + 8*s);
-            glVertex2f(x + 8*s, y + 8*s); glVertex2f(x + 9*s, y + 4*s);
-            glVertex2f(x + 9*s, y + 4*s); glVertex2f(x + 8*s, y);
-            glVertex2f(x + 8*s, y); glVertex2f(x + 1*s, y);
-            break;
-        case '6':
-            glVertex2f(x + 8*s, y + 14*s); glVertex2f(x + 2*s, y + 8*s);
-            glVertex2f(x + 2*s, y + 8*s); glVertex2f(x + 2*s, y + 2*s);
-            glVertex2f(x + 2*s, y + 2*s); glVertex2f(x + 6*s, y);
-            glVertex2f(x + 6*s, y); glVertex2f(x + 9*s, y + 3*s);
-            glVertex2f(x + 9*s, y + 3*s); glVertex2f(x + 9*s, y + 6*s);
-            glVertex2f(x + 9*s, y + 6*s); glVertex2f(x + 6*s, y + 8*s);
-            glVertex2f(x + 6*s, y + 8*s); glVertex2f(x + 2*s, y + 8*s);
-            break;
-        case '7':
-            glVertex2f(x, y + 14*s); glVertex2f(x + 9*s, y + 14*s);
-            glVertex2f(x + 9*s, y + 14*s); glVertex2f(x + 3*s, y);
-            break;
-        case '8':
+        case '0':
             glVertex2f(x + 2*s, y); glVertex2f(x + 8*s, y);
-            glVertex2f(x + 8*s, y); glVertex2f(x + 10*s, y + 4*s);
-            glVertex2f(x + 10*s, y + 4*s); glVertex2f(x, y + 10*s);
-            glVertex2f(x, y + 10*s); glVertex2f(x + 2*s, y + 14*s);
-            glVertex2f(x + 2*s, y + 14*s); glVertex2f(x + 8*s, y + 14*s);
-            glVertex2f(x + 8*s, y + 14*s); glVertex2f(x + 10*s, y + 10*s);
-            glVertex2f(x + 10*s, y + 10*s); glVertex2f(x, y + 4*s);
-            glVertex2f(x, y + 4*s); glVertex2f(x + 2*s, y);
-            break;
-        case '9':
-            glVertex2f(x + 2*s, y); glVertex2f(x + 8*s, y + 6*s);
-            glVertex2f(x + 8*s, y + 6*s); glVertex2f(x + 8*s, y + 12*s);
-            glVertex2f(x + 8*s, y + 12*s); glVertex2f(x + 5*s, y + 14*s);
-            glVertex2f(x + 5*s, y + 14*s); glVertex2f(x + 1*s, y + 11*s);
-            glVertex2f(x + 1*s, y + 11*s); glVertex2f(x + 1*s, y + 8*s);
-            glVertex2f(x + 1*s, y + 8*s); glVertex2f(x + 8*s, y + 8*s);
+            glVertex2f(x + 8*s, y); glVertex2f(x + 10*s, y + 3*s);
+            glVertex2f(x + 10*s, y + 3*s); glVertex2f(x + 10*s, y + 11*s);
+            glVertex2f(x + 10*s, y + 11*s); glVertex2f(x + 8*s, y + 14*s);
+            glVertex2f(x + 8*s, y + 14*s); glVertex2f(x + 2*s, y + 14*s);
+            glVertex2f(x + 2*s, y + 14*s); glVertex2f(x, y + 11*s);
+            glVertex2f(x, y + 11*s); glVertex2f(x, y + 3*s);
+            glVertex2f(x, y + 3*s); glVertex2f(x + 2*s, y);
             break;
         case ':':
             glVertex2f(x + 4*s, y + 10*s); glVertex2f(x + 5*s, y + 10*s);
@@ -277,47 +190,6 @@ static void drawStrokeChar(char c, float x, float y, float s) {
             break;
         case '_':
             glVertex2f(x, y); glVertex2f(x + 9*s, y);
-            break;
-        case '[':
-            glVertex2f(x + 7*s, y + 14*s); glVertex2f(x + 2*s, y + 14*s);
-            glVertex2f(x + 2*s, y + 14*s); glVertex2f(x + 2*s, y);
-            glVertex2f(x + 2*s, y); glVertex2f(x + 7*s, y);
-            break;
-        case ']':
-            glVertex2f(x + 2*s, y + 14*s); glVertex2f(x + 7*s, y + 14*s);
-            glVertex2f(x + 7*s, y + 14*s); glVertex2f(x + 7*s, y);
-            glVertex2f(x + 7*s, y); glVertex2f(x + 2*s, y);
-            break;
-        case '(':
-            glVertex2f(x + 7*s, y + 14*s); glVertex2f(x + 3*s, y + 7*s);
-            glVertex2f(x + 3*s, y + 7*s); glVertex2f(x + 7*s, y);
-            break;
-        case ')':
-            glVertex2f(x + 3*s, y + 14*s); glVertex2f(x + 7*s, y + 7*s);
-            glVertex2f(x + 7*s, y + 7*s); glVertex2f(x + 3*s, y);
-            break;
-        case '=':
-            glVertex2f(x + 1*s, y + 9*s); glVertex2f(x + 9*s, y + 9*s);
-            glVertex2f(x + 1*s, y + 5*s); glVertex2f(x + 9*s, y + 5*s);
-            break;
-        case '>':
-            glVertex2f(x + 2*s, y + 13*s); glVertex2f(x + 8*s, y + 7*s);
-            glVertex2f(x + 8*s, y + 7*s); glVertex2f(x + 2*s, y + 1*s);
-            break;
-        case '<':
-            glVertex2f(x + 8*s, y + 13*s); glVertex2f(x + 2*s, y + 7*s);
-            glVertex2f(x + 2*s, y + 7*s); glVertex2f(x + 8*s, y + 1*s);
-            break;
-        case '+':
-            glVertex2f(x + 1*s, y + 7*s); glVertex2f(x + 9*s, y + 7*s);
-            glVertex2f(x + 5*s, y + 11*s); glVertex2f(x + 5*s, y + 3*s);
-            break;
-        case '/':
-            glVertex2f(x + 1*s, y); glVertex2f(x + 9*s, y + 14*s);
-            break;
-        case '.':
-            glVertex2f(x + 4*s, y); glVertex2f(x + 5*s, y);
-            glVertex2f(x + 4*s, y + 1*s); glVertex2f(x + 5*s, y + 1*s);
             break;
         default:
             // space or unsupported
@@ -475,103 +347,87 @@ void GateRenderer::drawORGate(float x, float y, float w, float h, bool isSelecte
     float right = x + halfW;
     float top = y + halfH;
     float bottom = y - halfH;
-    float indentDepth = w * 0.22f; // Concave back depth
 
-    // 1. Properly adjusted Body Fill Color (Rich Royal Amethyst Violet)
+    // Body Fill
     if (isSelected) {
-        glColor3f(0.30f, 0.18f, 0.48f); // Luminous Selected Purple
+        glColor3f(0.24f, 0.20f, 0.38f);
     } else {
-        glColor3f(0.20f, 0.13f, 0.32f); // Deep Royal Amethyst Purple (Solid, distinct from background)
+        glColor3f(0.15f, 0.13f, 0.25f);
     }
 
-    // 2. Star-Convex Artifact-Free Body Fill using GL_TRIANGLE_FAN from interior focus point
-    float centerX = left + w * 0.45f;
-    float centerY = y;
-
-    glBegin(GL_TRIANGLE_FAN);
-    glVertex2f(centerX, centerY); // Fan Center
-
-    // Right Apex
+    // Interior polygon approximation
+    glBegin(GL_POLYGON);
     glVertex2f(right, y);
-
-    // Sweeping Top Curve (Right to Left)
-    const int STEPS = 20;
-    for (int i = STEPS; i >= 0; --i) {
-        float t = (float)i / (float)STEPS;
-        float px = left + w * t;
-        float py = y + halfH * (1.0f - t * t);
+    for (int i = 0; i <= 16; ++i) {
+        float t = (float)i / 16.0f;
+        float px = right - (w * 0.9f) * t;
+        float py = y + halfH * (1.0f - t * t * 0.6f);
         glVertex2f(px, py);
     }
-
-    // Concave Back Curve (Top to Bottom)
-    for (int i = STEPS; i >= -STEPS; --i) {
-        float angle = ((float)i / (float)STEPS) * (PI * 0.5f); // PI/2 down to -PI/2
-        float px = left + indentDepth * cosf(angle);
+    // Concave back curve
+    for (int i = 16; i >= -16; --i) {
+        float angle = (float)i / 16.0f * (PI * 0.35f);
+        float px = left + (w * 0.22f) * cosf(angle);
         float py = y + halfH * sinf(angle);
         glVertex2f(px, py);
     }
-
-    // Sweeping Bottom Curve (Left to Right)
-    for (int i = 0; i <= STEPS; ++i) {
-        float t = (float)i / (float)STEPS;
-        float px = left + w * t;
-        float py = y - halfH * (1.0f - t * t);
+    // Bottom curve to apex
+    for (int i = 0; i <= 16; ++i) {
+        float t = (float)i / 16.0f;
+        float px = (left + w * 0.1f) + (w * 0.9f) * t;
+        float py = (y - halfH) + halfH * (t * t * 0.6f);
         glVertex2f(px, py);
     }
     glEnd();
 
-    // 3. Crisp, Vibrant Outline (Vivid Neon Violet)
-    glLineWidth(isSelected ? 3.2f : 2.2f);
+    // Outline
+    glLineWidth(isSelected ? 3.0f : 2.0f);
     if (isSelected) {
-        glColor3f(0.95f, 0.65f, 1.0f); // Bright Glowing Lilac
+        glColor3f(0.8f, 0.4f, 1.0f);
     } else {
-        glColor3f(0.78f, 0.48f, 1.0f); // Vibrant Electric Purple
+        glColor3f(0.85f, 0.7f, 1.0f);
     }
 
-    // Top Curve Outline
+    // Top sweeping curve
     glBegin(GL_LINE_STRIP);
-    for (int i = 0; i <= STEPS; ++i) {
-        float t = (float)i / (float)STEPS;
-        float px = left + w * t;
-        float py = y + halfH * (1.0f - t * t);
+    for (int i = 0; i <= 20; ++i) {
+        float t = (float)i / 20.0f;
+        float px = left + (w) * t;
+        float py = top - (halfH) * (t * t * 0.8f);
         glVertex2f(px, py);
     }
     glEnd();
 
-    // Bottom Curve Outline
+    // Bottom sweeping curve
     glBegin(GL_LINE_STRIP);
-    for (int i = 0; i <= STEPS; ++i) {
-        float t = (float)i / (float)STEPS;
-        float px = left + w * t;
-        float py = y - halfH * (1.0f - t * t);
+    for (int i = 0; i <= 20; ++i) {
+        float t = (float)i / 20.0f;
+        float px = left + (w) * t;
+        float py = bottom + (halfH) * (t * t * 0.8f);
         glVertex2f(px, py);
     }
     glEnd();
 
-    // Concave Back Curve Outline
+    // Concave back curve
     glBegin(GL_LINE_STRIP);
-    for (int i = -STEPS; i <= STEPS; ++i) {
-        float angle = ((float)i / (float)STEPS) * (PI * 0.5f);
-        float px = left + indentDepth * cosf(angle);
+    for (int i = -16; i <= 16; ++i) {
+        float angle = (float)i / 16.0f * (PI * 0.35f);
+        float px = left + (w * 0.22f) * (cosf(angle) - 0.7f);
         float py = y + halfH * sinf(angle);
         glVertex2f(px, py);
     }
     glEnd();
     glLineWidth(1.0f);
 
-    // 4. Input / Output Terminal Wires aligned to the curved boundary
+    // Input/Output Wires
     float pinInY1 = y + halfH * 0.45f;
     float pinInY2 = y - halfH * 0.45f;
     float pinLen = 22.0f;
 
-    // Contact point on the concave back curve at pin height
-    float angleContact = asinf(0.45f);
-    float contactX = left + indentDepth * cosf(angleContact);
-
     glColor3f(0.7f, 0.8f, 0.9f);
     glBegin(GL_LINES);
-    glVertex2f(left - pinLen, pinInY1); glVertex2f(contactX, pinInY1);
-    glVertex2f(left - pinLen, pinInY2); glVertex2f(contactX, pinInY2);
+    glVertex2f(left - pinLen, pinInY1); glVertex2f(left + 2.0f, pinInY1);
+    glVertex2f(left - pinLen, pinInY2); glVertex2f(left + 2.0f, pinInY2);
     glVertex2f(right, y); glVertex2f(right + pinLen, y);
     glEnd();
 
@@ -579,9 +435,8 @@ void GateRenderer::drawORGate(float x, float y, float w, float h, bool isSelecte
     drawTerminal(left - pinLen, pinInY2, "B", inputB, true);
     drawTerminal(right + pinLen, y, "OUT", output, false);
 
-    // 5. Gate Text Label
     glColor3f(1.0f, 1.0f, 1.0f);
-    drawText("OR", x - 10.0f, y - 5.0f, 0.85f);
+    drawText("OR", x - 12.0f, y - 5.0f, 0.8f);
 }
 
 void GateRenderer::drawNOTGate(float x, float y, float w, float h, bool isSelected, int input, int output) {

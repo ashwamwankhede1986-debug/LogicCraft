@@ -5,30 +5,6 @@ LogicCraft is an interdisciplinary visual logic-circuit simulator designed and i
 
 ---
 
-## 🚀 Single Unified Executable: `LogicCraft.exe`
-
-All four academic subject modules have been compiled and linked into **one single standalone executable**:
-👉 **`LogicCraft.exe`**
-
-Double-clicking `LogicCraft.exe` opens an interactive master console allowing you to:
-1. Run **C++ / Programming Lab** (CO1 Arrays & CO2 Linked List)
-2. Run **Computer Graphics / OpenGL** verification & launch the live visual window
-3. Run **Java / Problem Solving Using OOP** (CO1 Fundamentals & CO2 Polymorphic Hierarchy / Lambdas)
-4. Run **COA / 64-Bit Assembly (ALP)** (CO1 Processor Model & CO2 Native x86-64 Machine Code)
-5. Execute the **Full 12-Step Review-2 Academic Demonstration**
-6. Launch the **Interactive OpenGL Circuit Canvas Window** directly (drag gates, zoom, pan, toggle inputs)
-
-### Command-Line Arguments:
-You can also launch specific modules or automated checks directly:
-* `.\LogicCraft.exe` (Interactive Master Menu)
-* `.\LogicCraft.exe --all` (Runs full 12-step review sequence)
-* `.\LogicCraft.exe --graphics` (Launches OpenGL interactive canvas directly)
-* `.\LogicCraft.exe --cpp` (Runs C++ Lab demonstration)
-* `.\LogicCraft.exe --java` (Runs Java OOP demonstration)
-* `.\LogicCraft.exe --coa` (Runs COA / 64-bit Assembly demonstration)
-
----
-
 ## 🏛️ Academic Course Outcome (CO) Mapping
 
 | Subject | CO1 | CO2 | Review-2 Demonstration Evidence |
@@ -45,12 +21,12 @@ You can also launch specific modules or automated checks directly:
 ```
 LogicCraft/
 │
-├── LogicCraft.exe                      # ⭐ ALL-IN-ONE UNIFIED STANDALONE EXECUTABLE
-├── build_single_exe.bat                # Recompiles the single LogicCraft.exe from source
 ├── README.md                           # Main Project & Viva Documentation
-├── libgcc_s_seh-1.dll                  # Portable runtime DLL
-├── libstdc++-6.dll                     # Portable runtime DLL
-├── libwinpthread-1.dll                 # Portable runtime DLL
+├── run_cpp.bat                         # Batch launcher: C++ Module
+├── run_graphics.bat                    # Batch launcher: OpenGL Visual Window
+├── run_java.bat                        # Batch launcher: Java Module
+├── run_coa.bat                         # Batch launcher: COA / 64-bit Assembly Module
+├── run_all.ps1                         # Master PowerShell script: Full 12-step demo
 │
 ├── Cpp/                                # PART 1: Programming Lab (C++)
 │   ├── Gates/ (Gate.h, Gate.cpp)

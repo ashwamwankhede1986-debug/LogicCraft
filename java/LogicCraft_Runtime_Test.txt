@@ -1,0 +1,4 @@
+LogicCraft Circuit Report
+-------------------------
+Total Gates: 2
+Total Connections: 0

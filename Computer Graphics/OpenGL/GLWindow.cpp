@@ -1,11 +1,5 @@
-#ifndef UNICODE
-#define UNICODE
-#endif
-#ifndef _UNICODE
-#define _UNICODE
-#endif
-
 #include "GLWindow.h"
+#include "../Rendering/GateRenderer.h"
 #include <iostream>
 
 LRESULT CALLBACK GLWindow::WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
@@ -108,14 +102,12 @@ bool GLWindow::init() {
     wc.style = CS_OWNDC | CS_HREDRAW | CS_VREDRAW;
     wc.lpfnWndProc = GLWindow::WindowProc;
     wc.hInstance = hInstance;
-    wc.lpszClassName = L"LogicCraftGLWindowClass";
+    wc.lpszClassName = "LogicCraftGLWindowClass";
     wc.hCursor = LoadCursor(NULL, IDC_ARROW);
 
     if (!RegisterClass(&wc)) {
-        if (GetLastError() != ERROR_CLASS_ALREADY_EXISTS) {
-            std::cerr << "[OpenGL Error] Failed to register window class!\n";
-            return false;
-        }
+        std::cerr << "[OpenGL Error] Failed to register window class!\n";
+        return false;
     }
 
     RECT rect = {0, 0, width, height};
@@ -123,8 +115,8 @@ bool GLWindow::init() {
 
     hwnd = CreateWindowEx(
         0,
-        L"LogicCraftGLWindowClass",
-        L"LogicCraft — Visual Logic Gate Simulator (Review 2: CO1 & CO2)",
+        "LogicCraftGLWindowClass",
+        "LogicCraft — Visual Logic Gate Simulator (Review 2: CO1 & CO2)",
         WS_OVERLAPPEDWINDOW | WS_VISIBLE,
         CW_USEDEFAULT, CW_USEDEFAULT,
         rect.right - rect.left, rect.bottom - rect.top,
@@ -174,13 +166,16 @@ bool GLWindow::init() {
     // Enable anti-aliased smooth lines
     glEnable(GL_LINE_SMOOTH);
     glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+    // Initialize Texture and Lighting Systems (CO6)
+    GateRenderer::initTextures();
+    GateRenderer::initLighting();
 
     std::cout << "[OpenGL Init] Context initialized successfully.\n";
     std::cout << " -> Vendor:   " << glGetString(GL_VENDOR) << "\n";
     std::cout << " -> Renderer: " << glGetString(GL_RENDERER) << "\n";
     std::cout << " -> Version:  " << glGetString(GL_VERSION) << "\n";
+    std::cout << " -> CO6 Texture Mapping: Enabled (Press T to toggle)\n";
+    std::cout << " -> CO6 Hardware Lights: Enabled (Press L to toggle)\n";
 
     isRunning = true;
     return true;
@@ -211,8 +206,12 @@ void GLWindow::handleMouseMove(int x, int y) {
     int dy = y - lastMouseY;
 
     if (isRightDragging) {
-        // Pan canvas (Translation)
-        camera.pan((float)dx, (float)dy);
+        if (canvas.is3DModeActive()) {
+            canvas.rotate3D((float)dx * 0.5f, (float)dy * 0.5f);
+        } else {
+            // Pan canvas (Translation)
+            camera.pan((float)dx, (float)dy);
+        }
     } else {
         float worldX, worldY;
         camera.screenToWorld(x, y, &worldX, &worldY);
@@ -232,8 +231,12 @@ void GLWindow::handleMouseUp(int button, int x, int y) {
 }
 
 void GLWindow::handleMouseWheel(short delta, int x, int y) {
-    float factor = (delta > 0) ? 1.15f : 0.87f;
-    camera.zoom(factor, (float)x, (float)y);
+    if (canvas.is3DModeActive()) {
+        canvas.zoom3D(delta > 0 ? -45.0f : 45.0f);
+    } else {
+        float factor = (delta > 0) ? 1.15f : 0.87f;
+        camera.zoom(factor, (float)x, (float)y);
+    }
 }
 
 void GLWindow::handleKeyDown(WPARAM key) {
@@ -243,19 +246,74 @@ void GLWindow::handleKeyDown(WPARAM key) {
             break;
         case '1':
             canvas.selectGate(1);
-            std::cout << "[Canvas] Selected AND Gate (ID: 1)\n";
+            std::cout << "[Canvas] Selected Gate 1\n";
             break;
         case '2':
             canvas.selectGate(2);
-            std::cout << "[Canvas] Selected OR Gate (ID: 2)\n";
+            std::cout << "[Canvas] Selected Gate 2\n";
             break;
         case '3':
             canvas.selectGate(3);
-            std::cout << "[Canvas] Selected NOT Gate (ID: 3)\n";
+            std::cout << "[Canvas] Selected Gate 3\n";
+            break;
+        case '4':
+            canvas.selectGate(4);
+            std::cout << "[Canvas] Selected Gate 4\n";
+            break;
+        case '5':
+            canvas.selectGate(5);
+            std::cout << "[Canvas] Selected Gate 5\n";
+            break;
+        case '6':
+            canvas.selectGate(6);
+            std::cout << "[Canvas] Selected Gate 6\n";
+            break;
+        case '7':
+            canvas.initAll7GatesShowcase();
+            std::cout << "[Canvas] Loaded All 7 Gates Showcase (AND, NAND, OR, NOR, XOR, XNOR, NOT)\n";
+            break;
+        case 'C':
+            canvas.initDefaultCircuit();
+            std::cout << "[Canvas] Loaded 4-Gate Cascade Circuit\n";
+            break;
+        case 'G':
+            canvas.cycleSelectedGateType();
+            break;
+        case 'O':
+            canvas.toggle3DMode();
+            std::cout << "[Canvas] 3D Mode " << (canvas.is3DModeActive() ? "ACTIVATED" : "DEACTIVATED") << "\n";
             break;
         case 'R':
-            camera.reset();
-            std::cout << "[Camera] View reset to default (Pan: 0, 0 | Zoom: 1.0X)\n";
+            if (canvas.getSelectedGateId() != -1) {
+                canvas.rotateSelectedGate(90.0f);
+                std::cout << "[2D Transformation] Rotated selected gate by 90 degrees\n";
+            } else {
+                camera.reset();
+                canvas.reset3DView();
+                std::cout << "[Camera] View reset to default (Pan: 0, 0 | Zoom: 1.0X)\n";
+            }
+            break;
+        case 'H':
+            if (canvas.getSelectedGateId() != -1) {
+                canvas.reflectSelectedGateHorizontal();
+                std::cout << "[2D Transformation] Horizontally reflected selected gate (Flip H)\n";
+            }
+            break;
+        case 'V':
+            if (canvas.getSelectedGateId() != -1) {
+                canvas.reflectSelectedGateVertical();
+                std::cout << "[2D Transformation] Vertically reflected selected gate (Flip V)\n";
+            }
+            break;
+        case 'T':
+            GateRenderer::toggleTextures();
+            std::cout << "[Graphics CO6] Texture Mapping toggled: " 
+                      << (GateRenderer::areTexturesEnabled() ? "ON" : "OFF") << "\n";
+            break;
+        case 'L':
+            GateRenderer::toggleLighting();
+            std::cout << "[Graphics CO6] Hardware Lighting & Effects toggled: " 
+                      << (GateRenderer::isLightingEnabled() ? "ON" : "OFF") << "\n";
             break;
         case VK_SPACE:
             canvas.toggleSelectedGateInput();
@@ -263,26 +321,32 @@ void GLWindow::handleKeyDown(WPARAM key) {
             break;
         case VK_OEM_PLUS:
         case VK_ADD:
-            camera.zoom(1.15f);
+            if (canvas.is3DModeActive()) canvas.zoom3D(-40.0f);
+            else camera.zoom(1.15f);
             break;
         case VK_OEM_MINUS:
         case VK_SUBTRACT:
-            camera.zoom(0.87f);
+            if (canvas.is3DModeActive()) canvas.zoom3D(40.0f);
+            else camera.zoom(0.87f);
             break;
         case VK_LEFT:
-            if (canvas.getSelectedGateId() != -1) canvas.moveSelectedGate(-10.0f, 0.0f);
+            if (canvas.is3DModeActive()) canvas.rotate3D(-10.0f, 0.0f);
+            else if (canvas.getSelectedGateId() != -1) canvas.moveSelectedGate(-10.0f, 0.0f);
             else camera.pan(15.0f, 0.0f);
             break;
         case VK_RIGHT:
-            if (canvas.getSelectedGateId() != -1) canvas.moveSelectedGate(10.0f, 0.0f);
+            if (canvas.is3DModeActive()) canvas.rotate3D(10.0f, 0.0f);
+            else if (canvas.getSelectedGateId() != -1) canvas.moveSelectedGate(10.0f, 0.0f);
             else camera.pan(-15.0f, 0.0f);
             break;
         case VK_UP:
-            if (canvas.getSelectedGateId() != -1) canvas.moveSelectedGate(0.0f, 10.0f);
+            if (canvas.is3DModeActive()) canvas.rotate3D(0.0f, -10.0f);
+            else if (canvas.getSelectedGateId() != -1) canvas.moveSelectedGate(0.0f, 10.0f);
             else camera.pan(0.0f, -15.0f);
             break;
         case VK_DOWN:
-            if (canvas.getSelectedGateId() != -1) canvas.moveSelectedGate(0.0f, -10.0f);
+            if (canvas.is3DModeActive()) canvas.rotate3D(0.0f, 10.0f);
+            else if (canvas.getSelectedGateId() != -1) canvas.moveSelectedGate(0.0f, -10.0f);
             else camera.pan(0.0f, 15.0f);
             break;
         default:
@@ -291,14 +355,18 @@ void GLWindow::handleKeyDown(WPARAM key) {
 }
 
 void GLWindow::renderFrame() {
-    // 1. Apply View Transformation (CO2 Viewport & Ortho Camera)
-    camera.applyViewTransform();
+    if (canvas.is3DModeActive()) {
+        canvas.render(camera);
+    } else {
+        // 1. Apply View Transformation (CO2 Viewport & Ortho Camera)
+        camera.applyViewTransform();
 
-    // 2. Render Canvas, Grid, Gates, and Wires (CO1 Primitives + CO2 Clipping)
-    canvas.render(camera);
+        // 2. Render Canvas, Grid, Gates, and Wires (CO1 Primitives + CO2 Clipping)
+        canvas.render(camera);
 
-    // 3. Render 2D Screen-space HUD Overlay
-    canvas.renderHUD(width, height, camera);
+        // 3. Render 2D Screen-space HUD Overlay
+        canvas.renderHUD(width, height, camera);
+    }
 
     // Swap double buffer
     SwapBuffers(hdc);
